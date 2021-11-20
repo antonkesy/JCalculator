@@ -23,6 +23,12 @@ public class Tokenizer {
     }
 
     private static Token getTokenFromString(String stringToken) throws UnknownTokenException {
+        //
+        if(stringToken.length()==1){
+
+        }else{
+            //can only be numeric value
+        }
         return new SeparatorToken(SeparatorType.LEFT);
     }
 
@@ -45,6 +51,7 @@ public class Tokenizer {
         StringBuilder sepRegex = new StringBuilder(allSeparator.length() * 2 + 2);
         //start of regex option
         sepRegex.append('(');
+        sepRegex.append("\\s|");
         //add every char as regex option
         for (char c : allSeparator.toCharArray()) {
             sepRegex.append(c).append('|');
