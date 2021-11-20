@@ -17,4 +17,13 @@ public class ConstantToken implements ValueToken {
     public int getValue() {
         return value;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConstantToken that = (ConstantToken) o;
+        return value == that.value;
+    }
+
 }

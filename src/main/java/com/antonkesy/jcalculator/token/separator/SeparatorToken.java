@@ -8,4 +8,13 @@ public class SeparatorToken implements Token {
     public SeparatorToken(SeparatorType type) {
         this.separatorType = type;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SeparatorToken that = (SeparatorToken) o;
+        return separatorType == that.separatorType;
+    }
+
 }
