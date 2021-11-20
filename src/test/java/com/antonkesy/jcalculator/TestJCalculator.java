@@ -1,6 +1,6 @@
 package com.antonkesy.jcalculator;
 
-import com.antonkesy.jcalculator.parser.token.Token;
+import com.antonkesy.jcalculator.token.Token;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

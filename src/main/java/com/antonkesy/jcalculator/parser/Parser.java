@@ -1,12 +1,12 @@
 package com.antonkesy.jcalculator.parser;
 
-import com.antonkesy.jcalculator.parser.token.Token;
+import com.antonkesy.jcalculator.token.Token;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Parser {
-    public static List<Token> convertToExpressions(String expressionList) {
+    public static List<Token> convertToExpressions(List<Token> tokens) {
         return new ArrayList<Token>();
     }
 }
