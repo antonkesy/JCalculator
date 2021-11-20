@@ -5,6 +5,10 @@ import com.antonkesy.jcalculator.token.value.ValueToken;
 public class ConstantToken implements ValueToken {
     private final int value;
 
+    public ConstantToken(ConstantType type) {
+        value = type.value;
+    }
+
     public ConstantToken(int value) {
         this.value = value;
     }

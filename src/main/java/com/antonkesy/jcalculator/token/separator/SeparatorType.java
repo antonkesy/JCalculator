@@ -1,18 +1,24 @@
 package com.antonkesy.jcalculator.token.separator;
 
+import com.antonkesy.jcalculator.token.Token;
 import com.antonkesy.jcalculator.token.TypeRepresentation;
 
 public enum SeparatorType implements TypeRepresentation {
-    LEFT('('), RIGHT(')');
+    OPEN("("), CLOSE(")");
 
-    public final char representation;
+    public final String representation;
 
-    SeparatorType(char representation) {
+    SeparatorType(String representation) {
         this.representation = representation;
     }
 
     @Override
-    public char getTypeRepresentation() {
+    public String getTypeRepresentation() {
         return representation;
+    }
+
+    @Override
+    public Token createToken() {
+        return new SeparatorToken(this);
     }
 }
