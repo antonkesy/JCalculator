@@ -3,6 +3,8 @@ package com.antonkesy.jcalculator.token;
 import com.antonkesy.jcalculator.token.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.token.operator.OperatorType;
+import com.antonkesy.jcalculator.token.separator.SeparatorToken;
+import com.antonkesy.jcalculator.token.separator.SeparatorType;
 import com.antonkesy.jcalculator.token.value.constant.ConstantToken;
 import com.antonkesy.jcalculator.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.token.value.literal.LiteralToken;
@@ -98,7 +100,7 @@ public class TestTokenizer {
     }
 
     @Test
-    void testTokenizeMultiple() {
+    void testTokenizeMultiple1() {
         ArrayList<Token> multiTokenList = new ArrayList<>();
         multiTokenList.add(new LiteralToken(42));
         multiTokenList.add(new OperatorToken(OperatorType.ADD));
@@ -108,5 +110,20 @@ public class TestTokenizer {
         testTokenizeCase(multiTokenList, "42 +pi");
         testTokenizeCase(multiTokenList, "42 + pi");
         testTokenizeCase(multiTokenList, "42   +pi");
+    }
+
+    @Test
+    void testTokenizeMultiple2() {
+        ArrayList<Token> multiTokenList = new ArrayList<>();
+        multiTokenList.add(new SeparatorToken(SeparatorType.OPEN));
+        multiTokenList.add(new LiteralToken(42));
+        multiTokenList.add(new OperatorToken(OperatorType.DIVIDE));
+        multiTokenList.add(new LiteralToken(73));
+        multiTokenList.add(new SeparatorToken(SeparatorType.CLOSE));
+
+        testTokenizeCase(multiTokenList, "(42/73)");
+        testTokenizeCase(multiTokenList, "(42 /73)");
+        testTokenizeCase(multiTokenList, "(42 / 73)");
+        testTokenizeCase(multiTokenList, "( 42   /73)");
     }
 }
