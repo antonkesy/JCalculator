@@ -17,7 +17,7 @@ public class Tokenizer {
         if (input.isEmpty()) throw new UnknownTokenException();
         ArrayList<Token> tokenList = new ArrayList<>();
         //split input token input by delimiters
-        for (String stringToken : addSpacesBeforeDelimiter(input).split("\\s")) {
+        for (String stringToken : addSpacesDelimiter(input).split("\\s")) {
             //skip empty or only space token
             if (stringToken.isEmpty() || stringToken.matches("\\s*")) continue;
             //add token if exists
@@ -35,7 +35,7 @@ public class Tokenizer {
         //check literal token
         token = getLiteralToken(stringToken);
         if (token != null) return token;
-        throw new UnknownTokenException();
+        throw new UnknownTokenException(stringToken);
     }
 
     public static String enumRepresentations(TypeRepresentation[] enumValues) {
@@ -95,10 +95,10 @@ public class Tokenizer {
         return null;
     }
 
-    public static String addSpacesBeforeDelimiter(String input) {
+    public static String addSpacesDelimiter(String input) {
         String[] delimiters = getAllSeparateByChars().split("\\s");
         for (String delimiter : delimiters) {
-            input = input.replace(delimiter, " " + delimiter);
+            input = input.replace(delimiter, " " + delimiter + " ");
         }
         return input;
     }
