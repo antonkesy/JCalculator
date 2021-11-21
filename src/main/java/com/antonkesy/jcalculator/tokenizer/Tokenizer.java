@@ -21,7 +21,7 @@ public class Tokenizer {
         return tokenList;
     }
 
-    private static Token getTokenFromString(String stringToken) throws UnknownTokenException {
+    public static Token getTokenFromString(String stringToken) throws UnknownTokenException {
         Token token;
         token = getTokenOfType(stringToken);
         if (token != null) return token;
@@ -29,11 +29,13 @@ public class Tokenizer {
         throw new UnknownTokenException();
     }
 
-    private static String enumRepresentations(TypeRepresentation[] enumValues) {
+    public static String enumRepresentations(TypeRepresentation[] enumValues) {
         StringBuilder allReps = new StringBuilder(enumValues.length);
         for (TypeRepresentation value : enumValues) {
-            allReps.append(value.getTypeRepresentation());
+            allReps.append(value.getTypeRepresentation()).append(' ');
         }
+        //remove last space
+        allReps.deleteCharAt(allReps.length() - 1);
         return allReps.toString();
     }
 
@@ -64,9 +66,10 @@ public class Tokenizer {
      * @param optionString split by space all options regex should use
      * @return "(optionA|optionB|optionN)"
      */
-    private static String getOptionRegex(String optionString) {
+    public static String getOptionRegex(String optionString) {
         StringBuilder regex = new StringBuilder();
         //add every char as regex option
+        regex.append('(');
         for (String s : optionString.split("\\s")) {
             regex.append(s).append('|');
         }
