@@ -30,9 +30,10 @@ public class TestTokenizer {
 
     @Test
     void testGetOptionsRegex() {
-        assertEquals("(a)", Tokenizer.getOptionRegex("a"));
-        assertEquals("(a|b)", Tokenizer.getOptionRegex("a b"));
-        assertEquals("(a|ab)", Tokenizer.getOptionRegex("a ab"));
+        // \Q*\E -> * not read as regex
+        assertEquals("(\\Qa\\E)", Tokenizer.getOptionRegex("a"));
+        assertEquals("(\\Qa\\E|\\Qb\\E)", Tokenizer.getOptionRegex("a b"));
+        assertEquals("(\\Qa\\E|\\Qab\\E)", Tokenizer.getOptionRegex("a ab"));
     }
 
     void testGetTokenFromStringCase(TypeRepresentation type) {
@@ -91,6 +92,9 @@ public class TestTokenizer {
         singleTokenList.add(new OperatorToken(OperatorType.ADD));
         testTokenizeCase(singleTokenList, "+");
         singleTokenList.clear();
+
+        assertThrows(UnknownTokenException.class, () -> Tokenizer.tokenize("un"));
+        assertThrows(UnknownTokenException.class, () -> Tokenizer.tokenize(""));
     }
 
     @Test
