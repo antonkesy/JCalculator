@@ -19,4 +19,11 @@ public class TestTokenizer {
             }
         }
     }
+
+    @Test
+    void testGetOptionsRegex() {
+        assertEquals("(a)", Tokenizer.getOptionRegex("a"));
+        assertEquals("(a|b)", Tokenizer.getOptionRegex("a b"));
+        assertEquals("(a|ab)", Tokenizer.getOptionRegex("a ab"));
+    }
 }
