@@ -8,15 +8,18 @@ import com.antonkesy.jcalculator.token.separator.SeparatorType;
 import com.antonkesy.jcalculator.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.token.value.literal.LiteralToken;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class Tokenizer {
-    public static List<Token> tokenize(String list) throws IOException {
+    public static List<Token> tokenize(String list) throws UnknownTokenException {
         ArrayList<Token> tokenList = new ArrayList<>();
-        for (String stringToken : list.split(getOptionRegex(getAllSeparateByChars()))) {
+        //split input token list by delimiters
+        for (String stringToken : addSpacesBeforeDelimiter(list).split("\\s")) {
+            //skip empty or only space token
+            if (stringToken.isEmpty() || stringToken.matches("\\s*")) continue;
+            //add token if exists
             tokenList.add(getTokenFromString(stringToken));
         }
         return tokenList;
@@ -30,7 +33,6 @@ public class Tokenizer {
         //check literal token
         token = getLiteralToken(stringToken);
         if (token != null) return token;
-        //TODO check for literal numeric token
         throw new UnknownTokenException();
     }
 
@@ -89,5 +91,13 @@ public class Tokenizer {
         }
 
         return null;
+    }
+
+    public static String addSpacesBeforeDelimiter(String input) {
+        String[] delimiters = getAllSeparateByChars().split("\\s");
+        for (String delimiter : delimiters) {
+            input = input.replace(delimiter, " " + delimiter);
+        }
+        return input;
     }
 }
