@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class Tokenizer {
     public static List<Token> tokenize(String list) throws IOException {
         ArrayList<Token> tokenList = new ArrayList<>();
-        for (String stringToken : list.split(getAllSeparatorRegex())) {
+        for (String stringToken : list.split(getOptionRegex(getAllSeparateByChars()))) {
             tokenList.add(getTokenFromString(stringToken));
         }
         return tokenList;
@@ -40,26 +40,9 @@ public class Tokenizer {
     }
 
     private static String getAllSeparateByChars() {
-        return enumRepresentations(SeparatorType.values()) +
-                enumRepresentations(ConstantType.values()) +
-                enumRepresentations(OperatorType.values());
-    }
-
-    private static String getAllSeparatorRegex() {
-        String allSeparator = getAllSeparateByChars();
-        StringBuilder sepRegex = new StringBuilder();
-        //start of regex option
-        sepRegex.append('(');
-        sepRegex.append("\\s|");
-        //add every char as regex option
-        for (char c : allSeparator.toCharArray()) {
-            sepRegex.append(c).append('|');
-        }
-        //remove last appended '|'
-        sepRegex.deleteCharAt(sepRegex.length() - 1);
-        //end of regex option
-        sepRegex.append(')');
-        return sepRegex.toString();
+        return enumRepresentations(SeparatorType.values()) + ' ' +
+                enumRepresentations(ConstantType.values()) + ' ' +
+                enumRepresentations(OperatorType.values()) + "  ";
     }
 
     /**
@@ -71,7 +54,7 @@ public class Tokenizer {
         //add every char as regex option
         regex.append('(');
         for (String s : optionString.split("\\s")) {
-            regex.append(s).append('|');
+            regex.append(Pattern.quote(s)).append('|');
         }
         //remove last appended '|'
         regex.deleteCharAt(regex.length() - 1);
