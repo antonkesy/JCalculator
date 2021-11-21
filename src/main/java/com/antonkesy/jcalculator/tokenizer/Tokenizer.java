@@ -13,15 +13,17 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Tokenizer {
-    public static List<Token> tokenize(String list) throws UnknownTokenException {
+    public static List<Token> tokenize(String input) throws UnknownTokenException {
+        if (input.isEmpty()) throw new UnknownTokenException();
         ArrayList<Token> tokenList = new ArrayList<>();
-        //split input token list by delimiters
-        for (String stringToken : addSpacesBeforeDelimiter(list).split("\\s")) {
+        //split input token input by delimiters
+        for (String stringToken : addSpacesBeforeDelimiter(input).split("\\s")) {
             //skip empty or only space token
             if (stringToken.isEmpty() || stringToken.matches("\\s*")) continue;
             //add token if exists
             tokenList.add(getTokenFromString(stringToken));
         }
+        if (tokenList.isEmpty()) throw new UnknownTokenException();
         return tokenList;
     }
 
