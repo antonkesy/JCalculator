@@ -1,7 +1,7 @@
-package com.antonkesy.jcalculator.token.operator;
+package com.antonkesy.jcalculator.tokenizer.token.operator;
 
-import com.antonkesy.jcalculator.token.Token;
-import com.antonkesy.jcalculator.token.TypeRepresentation;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
+import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 
 public enum OperatorType implements TypeRepresentation {
     ADD("+"), SUB("-"), MULTIPLY("*"), DIVIDE("/");

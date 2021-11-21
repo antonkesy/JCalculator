@@ -1,6 +1,6 @@
-package com.antonkesy.jcalculator.token.operator;
+package com.antonkesy.jcalculator.tokenizer.token.operator;
 
-import com.antonkesy.jcalculator.token.Token;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
 
 public class OperatorToken implements Token {
     public final OperatorType operator;

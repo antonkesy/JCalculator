@@ -1,6 +1,6 @@
-package com.antonkesy.jcalculator.token.value.literal;
+package com.antonkesy.jcalculator.tokenizer.token.value.literal;
 
-import com.antonkesy.jcalculator.token.value.ValueToken;
+import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
 public class LiteralToken implements ValueToken {
     private int value;

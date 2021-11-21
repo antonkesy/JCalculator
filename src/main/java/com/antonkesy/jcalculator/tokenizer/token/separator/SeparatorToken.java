@@ -1,6 +1,6 @@
-package com.antonkesy.jcalculator.token.separator;
+package com.antonkesy.jcalculator.tokenizer.token.separator;
 
-import com.antonkesy.jcalculator.token.Token;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
 
 public class SeparatorToken implements Token {
     public final SeparatorType separatorType;

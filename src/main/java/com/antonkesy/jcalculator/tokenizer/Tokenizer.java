@@ -1,12 +1,12 @@
 package com.antonkesy.jcalculator.tokenizer;
 
-import com.antonkesy.jcalculator.token.Token;
-import com.antonkesy.jcalculator.token.TypeRepresentation;
-import com.antonkesy.jcalculator.token.exception.UnknownTokenException;
-import com.antonkesy.jcalculator.token.operator.OperatorType;
-import com.antonkesy.jcalculator.token.separator.SeparatorType;
-import com.antonkesy.jcalculator.token.value.constant.ConstantType;
-import com.antonkesy.jcalculator.token.value.literal.LiteralToken;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
+import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
+import com.antonkesy.jcalculator.tokenizer.token.exception.UnknownTokenException;
+import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
+import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
+import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
+import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 
 import java.util.ArrayList;
 import java.util.List;

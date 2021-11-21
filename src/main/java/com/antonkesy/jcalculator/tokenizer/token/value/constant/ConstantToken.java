@@ -1,6 +1,6 @@
-package com.antonkesy.jcalculator.token.value.constant;
+package com.antonkesy.jcalculator.tokenizer.token.value.constant;
 
-import com.antonkesy.jcalculator.token.value.ValueToken;
+import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
 public class ConstantToken implements ValueToken {
     private final int value;

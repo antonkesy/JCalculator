@@ -1,13 +1,15 @@
 package com.antonkesy.jcalculator.token;
 
-import com.antonkesy.jcalculator.token.exception.UnknownTokenException;
-import com.antonkesy.jcalculator.token.operator.OperatorToken;
-import com.antonkesy.jcalculator.token.operator.OperatorType;
-import com.antonkesy.jcalculator.token.separator.SeparatorToken;
-import com.antonkesy.jcalculator.token.separator.SeparatorType;
-import com.antonkesy.jcalculator.token.value.constant.ConstantToken;
-import com.antonkesy.jcalculator.token.value.constant.ConstantType;
-import com.antonkesy.jcalculator.token.value.literal.LiteralToken;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
+import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
+import com.antonkesy.jcalculator.tokenizer.token.exception.UnknownTokenException;
+import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
+import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
+import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
+import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
+import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantToken;
+import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
+import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import org.junit.jupiter.api.Test;
 

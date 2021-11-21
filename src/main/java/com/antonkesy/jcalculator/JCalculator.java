@@ -1,6 +1,6 @@
 package com.antonkesy.jcalculator;
 
-import com.antonkesy.jcalculator.token.Token;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.parser.Parser;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 

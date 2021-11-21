@@ -1,7 +1,7 @@
-package com.antonkesy.jcalculator.token.separator;
+package com.antonkesy.jcalculator.tokenizer.token.separator;
 
-import com.antonkesy.jcalculator.token.Token;
-import com.antonkesy.jcalculator.token.TypeRepresentation;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
+import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 
 public enum SeparatorType implements TypeRepresentation {
     OPEN("("), CLOSE(")");

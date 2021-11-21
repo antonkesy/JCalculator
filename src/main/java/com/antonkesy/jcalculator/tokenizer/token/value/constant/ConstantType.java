@@ -1,7 +1,7 @@
-package com.antonkesy.jcalculator.token.value.constant;
+package com.antonkesy.jcalculator.tokenizer.token.value.constant;
 
-import com.antonkesy.jcalculator.token.Token;
-import com.antonkesy.jcalculator.token.TypeRepresentation;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
+import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 
 public enum ConstantType implements TypeRepresentation {
     //TODO use double for values!
