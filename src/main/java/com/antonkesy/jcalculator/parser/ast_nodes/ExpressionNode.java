@@ -8,8 +8,8 @@ public class ExpressionNode extends Node {
 
     public Node leftChild, rightChild;
 
-    public ExpressionNode(Token token, Node leftChild, Node rightChild) {
-        super(token);
+    public ExpressionNode(Token token, Node parent, Node leftChild, Node rightChild) {
+        super(token, parent);
         this.leftChild = leftChild;
         this.rightChild = rightChild;
     }

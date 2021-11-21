@@ -4,8 +4,8 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 
 public class FactorNode extends Node {
 
-    public FactorNode(Token token) {
-        super(token);
+    public FactorNode(Token token, Node parent) {
+        super(token, parent);
     }
 
     @Override
