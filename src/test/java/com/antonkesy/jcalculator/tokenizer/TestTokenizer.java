@@ -1,4 +1,4 @@
-package com.antonkesy.jcalculator.token;
+package com.antonkesy.jcalculator.tokenizer;
 
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
@@ -10,7 +10,6 @@ import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
-import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
