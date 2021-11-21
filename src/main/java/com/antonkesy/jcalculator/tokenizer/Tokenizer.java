@@ -6,6 +6,7 @@ import com.antonkesy.jcalculator.token.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.token.operator.OperatorType;
 import com.antonkesy.jcalculator.token.separator.SeparatorType;
 import com.antonkesy.jcalculator.token.value.constant.ConstantType;
+import com.antonkesy.jcalculator.token.value.literal.LiteralToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +24,11 @@ public class Tokenizer {
 
     public static Token getTokenFromString(String stringToken) throws UnknownTokenException {
         Token token;
+        //check token of types
         token = getTokenOfType(stringToken);
+        if (token != null) return token;
+        //check literal token
+        token = getLiteralToken(stringToken);
         if (token != null) return token;
         //TODO check for literal numeric token
         throw new UnknownTokenException();
@@ -76,5 +81,13 @@ public class Tokenizer {
 
     public static TypeRepresentation[][] getAllTypes() {
         return new TypeRepresentation[][]{OperatorType.values(), ConstantType.values(), SeparatorType.values()};
+    }
+
+    public static Token getLiteralToken(String tokenString) {
+        if (tokenString.matches("([-+])*[0-9]+")) {
+            return new LiteralToken(Integer.parseInt(tokenString));
+        }
+
+        return null;
     }
 }
