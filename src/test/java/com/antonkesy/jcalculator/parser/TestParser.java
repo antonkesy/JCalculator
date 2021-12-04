@@ -17,40 +17,28 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestParser {
     @Test
-    void testBuildDoubleLinkedTokenList() {
-        ArrayList<Token> testToken = new ArrayList<>();
-        testToken.add(new LiteralToken(42));
-        testToken.add(new OperatorToken(OperatorType.ADD));
-        testToken.add(new LiteralToken(73));
-
-        DoubleLinkedToken start = Parser.buildDoubleLinkedTokenList(testToken);
-
-        for (Token token : testToken) {
-            assertEquals(token, start.value);
-            start = start.after;
-        }
-    }
-
-    @Test
     void testParserSimple1() {
+        //42 + 73
         ArrayList<Token> testToken = new ArrayList<>();
         testToken.add(new LiteralToken(42));
         testToken.add(new OperatorToken(OperatorType.ADD));
         testToken.add(new LiteralToken(73));
 
-        Node result = Parser.buildAST(testToken);
+        Parser parser = new Parser(testToken);
+        Node result = parser.getRootNode();
         if (!(result instanceof ExpressionNode)) fail();
         ExpressionNode root = (ExpressionNode) result;
         FactorNode left = (FactorNode) root.leftChild;
         FactorNode right = (FactorNode) root.rightChild;
 
-        assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), null, left, right), result);
-        assertEquals(new FactorNode(new LiteralToken(42), root), left);
-        assertEquals(new FactorNode(new LiteralToken(73), root), right);
+        assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), left, right), root);
+        assertEquals(new FactorNode(new LiteralToken(42)), left);
+        assertEquals(new FactorNode(new LiteralToken(73)), right);
     }
 
     @Test
     void testParserSimple2() {
+        //42 + 73 * 101
         ArrayList<Token> testToken = new ArrayList<>();
         testToken.add(new LiteralToken(42));
         testToken.add(new OperatorToken(OperatorType.ADD));
@@ -58,14 +46,17 @@ public class TestParser {
         testToken.add(new OperatorToken(OperatorType.MULTIPLY));
         testToken.add(new LiteralToken(101));
 
-        Node result = Parser.buildAST(testToken);
+        Parser parser = new Parser(testToken);
+        Node result = parser.getRootNode();
         if (!(result instanceof ExpressionNode)) fail();
         ExpressionNode root = (ExpressionNode) result;
-        FactorNode left = (FactorNode) root.leftChild;
-        FactorNode right = (FactorNode) root.rightChild;
+        ExpressionNode left = (ExpressionNode) root.leftChild; //exp 42 + 73
+        FactorNode right = (FactorNode) root.rightChild; // 101
 
-        assertEquals(new ExpressionNode(new OperatorToken(OperatorType.MULTIPLY), null, left, right), result);
-        assertEquals(new FactorNode(new OperatorToken(OperatorType.ADD), root), left);
-        assertEquals(new FactorNode(new LiteralToken(101), root), right);
+        FactorNode node42 = new FactorNode(new LiteralToken(42));
+        FactorNode node73 = new FactorNode(new LiteralToken(73));
+        assertEquals(new ExpressionNode(new OperatorToken(OperatorType.MULTIPLY), left, right), root);
+        assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), node42, node73), left);
+        assertEquals(new FactorNode(new LiteralToken(101)), right);
     }
 }
