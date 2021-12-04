@@ -9,8 +9,11 @@ import com.antonkesy.jcalculator.tokenizer.token.exception.UnknownTokenException
 import java.util.List;
 
 public class JCalculator {
+    //TODO create calculator object, non static
+    //TODO override list of constants
     public static Token calculate(List<Token> tokenList) {
-        Node rootAst = Parser.buildAST(tokenList);
+        Parser parser = new Parser(tokenList);
+        Node rootAst = parser.getRootNode();
         return null;
     }
 
