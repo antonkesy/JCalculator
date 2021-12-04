@@ -3,19 +3,15 @@ package com.antonkesy.jcalculator.tokenizer.token.value.constant;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
 public class ConstantToken implements ValueToken {
-    private final int value;
+    private final ConstantType type;
 
     public ConstantToken(ConstantType type) {
-        value = type.value;
-    }
-
-    public ConstantToken(int value) {
-        this.value = value;
+        this.type = type;
     }
 
     @Override
     public int getValue() {
-        return value;
+        return type.value;
     }
 
     @Override
@@ -23,7 +19,11 @@ public class ConstantToken implements ValueToken {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConstantToken that = (ConstantToken) o;
-        return value == that.value;
+        return type.equals(that.type);
     }
 
+    @Override
+    public String getRepresentation() {
+        return type.getTypeRepresentation();
+    }
 }

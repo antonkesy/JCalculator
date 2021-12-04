@@ -16,4 +16,9 @@ public class OperatorToken implements Token {
         OperatorToken that = (OperatorToken) o;
         return operator == that.operator;
     }
+
+    @Override
+    public String getRepresentation() {
+        return operator.representation;
+    }
 }

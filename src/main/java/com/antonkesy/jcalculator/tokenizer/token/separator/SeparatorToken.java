@@ -17,4 +17,8 @@ public class SeparatorToken implements Token {
         return separatorType == that.separatorType;
     }
 
+    @Override
+    public String getRepresentation() {
+        return separatorType.representation;
+    }
 }
