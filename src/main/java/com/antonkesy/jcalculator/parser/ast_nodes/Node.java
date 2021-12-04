@@ -4,7 +4,7 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 
 import java.util.Objects;
 
-public class Node {
+public abstract class Node {
     public final Node parent; //TODO get parent from correctly using recursion
     public final Token token;
 
@@ -20,4 +20,6 @@ public class Node {
         Node node = (Node) o;
         return Objects.equals(token, node.token);
     }
+
+    abstract String getRepresentation();
 }

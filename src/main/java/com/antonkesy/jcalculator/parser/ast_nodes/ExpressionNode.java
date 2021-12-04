@@ -21,4 +21,9 @@ public class ExpressionNode extends Node {
         ExpressionNode that = (ExpressionNode) o;
         return Objects.equals(leftChild, that.leftChild) && Objects.equals(rightChild, that.rightChild);
     }
+
+    @Override
+    String getRepresentation() {
+        return null;
+    }
 }

@@ -12,4 +12,9 @@ public class FactorNode extends Node {
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
+
+    @Override
+    String getRepresentation() {
+        return token.getRepresentation();
+    }
 }
