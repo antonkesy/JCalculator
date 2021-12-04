@@ -12,8 +12,7 @@ public class TestJCalculator {
     Token testString(String input) {
         try {
             return JCalculator.calculate(input);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignore) {
         }
         return null;
     }
