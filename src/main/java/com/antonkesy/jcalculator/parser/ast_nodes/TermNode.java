@@ -4,8 +4,8 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 
 public class TermNode extends Node {
 
-    public TermNode(Token token, Node parent) {
-        super(token, parent);
+    public TermNode(Token token) {
+        super(token );
     }
 
     @Override

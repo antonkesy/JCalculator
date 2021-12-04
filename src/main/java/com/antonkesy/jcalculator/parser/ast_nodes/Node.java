@@ -5,12 +5,10 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 import java.util.Objects;
 
 public abstract class Node {
-    public final Node parent; //TODO get parent from correctly using recursion
     public final Token token;
 
-    public Node(Token token, Node parent) {
+    public Node(Token token) {
         this.token = token;
-        this.parent = parent;
     }
 
     @Override
