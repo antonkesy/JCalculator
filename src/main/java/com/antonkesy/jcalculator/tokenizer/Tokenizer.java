@@ -60,9 +60,7 @@ public class Tokenizer {
     }
 
     private static String getAllSeparateByChars() {
-        return enumRepresentations(SeparatorType.values()) + ' ' +
-                enumRepresentations(ConstantType.values()) + ' ' +
-                enumRepresentations(OperatorType.values()) + "  ";
+        return enumRepresentations(SeparatorType.values()) + ' ' + enumRepresentations(ConstantType.values()) + ' ' + enumRepresentations(OperatorType.values()) + "  ";
     }
 
     /**
@@ -127,8 +125,7 @@ public class Tokenizer {
     }
 
     public Token currentToken() {
-        if (isTokenIndexInBound())
-            return token.get(tokenIndex);
+        if (isTokenIndexInBound()) return token.get(tokenIndex);
         else return null;
     }
 
