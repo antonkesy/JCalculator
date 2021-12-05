@@ -11,16 +11,20 @@ import java.util.List;
 public class JCalculator {
     //TODO create calculator object, non static
     //TODO override list of constants
-    public static Token calculate(List<Token> tokenList) {
-        Parser parser = new Parser(tokenList);
+    public static Token calculate(Tokenizer tokenizer) {
+        Parser parser = new Parser(tokenizer);
         Node rootAst = parser.getRootNode();
         return null;
     }
 
     public static Token calculate(String expressionString) throws UnknownTokenException {
-        return calculate(Tokenizer.tokenize(expressionString));
+        return calculate(new Tokenizer(expressionString));
     }
 
+    public static Token calculate(List<Token> tokenList) throws UnknownTokenException {
+        Tokenizer tokenizer = new Tokenizer(tokenList);
+        return calculate(tokenizer);
+    }
 
 }
 

@@ -13,7 +13,18 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Tokenizer {
-    public static List<Token> tokenize(String input) throws UnknownTokenException {
+    private int tokenIndex = -1;
+    private final List<Token> token;
+
+    public Tokenizer(String input) throws UnknownTokenException {
+        token = tokenize(input);
+    }
+
+    public Tokenizer(List<Token> alreadyTokenized) {
+        this.token = alreadyTokenized;
+    }
+
+    protected static List<Token> tokenize(String input) throws UnknownTokenException {
         if (input.isEmpty()) throw new UnknownTokenException();
         ArrayList<Token> tokenList = new ArrayList<>();
         //split input token input by delimiters
@@ -27,7 +38,7 @@ public class Tokenizer {
         return tokenList;
     }
 
-    public static Token getTokenFromString(String stringToken) throws UnknownTokenException {
+    protected static Token getTokenFromString(String stringToken) throws UnknownTokenException {
         Token token;
         //check token of types
         token = getTokenOfType(stringToken);
@@ -38,7 +49,7 @@ public class Tokenizer {
         throw new UnknownTokenException(stringToken);
     }
 
-    public static String enumRepresentations(TypeRepresentation[] enumValues) {
+    private static String enumRepresentations(TypeRepresentation[] enumValues) {
         StringBuilder allReps = new StringBuilder(enumValues.length);
         for (TypeRepresentation value : enumValues) {
             allReps.append(value.getTypeRepresentation()).append(' ');
@@ -58,7 +69,7 @@ public class Tokenizer {
      * @param optionString split by space all options regex should use
      * @return "(optionA|optionB|optionN)"
      */
-    public static String getOptionRegex(String optionString) {
+    protected static String getOptionRegex(String optionString) {
         StringBuilder regex = new StringBuilder();
         //add every char as regex option
         regex.append('(');
@@ -72,7 +83,7 @@ public class Tokenizer {
         return regex.toString();
     }
 
-    public static Token getTokenOfType(String tokenString) {
+    protected static Token getTokenOfType(String tokenString) {
         for (TypeRepresentation[] types : getAllTypes()) {
             for (TypeRepresentation option : types) {
                 if (tokenString.matches(Pattern.quote(option.getTypeRepresentation()))) {
@@ -83,11 +94,11 @@ public class Tokenizer {
         return null;
     }
 
-    public static TypeRepresentation[][] getAllTypes() {
+    protected static TypeRepresentation[][] getAllTypes() {
         return new TypeRepresentation[][]{OperatorType.values(), ConstantType.values(), SeparatorType.values()};
     }
 
-    public static Token getLiteralToken(String tokenString) {
+    protected static Token getLiteralToken(String tokenString) {
         if (tokenString.matches("([-+])*[0-9]+")) {
             return new LiteralToken(Integer.parseInt(tokenString));
         }
@@ -95,11 +106,33 @@ public class Tokenizer {
         return null;
     }
 
-    public static String addSpacesDelimiter(String input) {
+    protected static String addSpacesDelimiter(String input) {
         String[] delimiters = getAllSeparateByChars().split("\\s");
         for (String delimiter : delimiters) {
             input = input.replace(delimiter, " " + delimiter + " ");
         }
         return input;
+    }
+
+    public Token peek() {
+        if (tokenIndex + 1 < token.size()) {
+            return token.get(tokenIndex + 1);
+        }
+        return null;
+    }
+
+    public Token nextToken() {
+        ++tokenIndex;
+        return currentToken();
+    }
+
+    public Token currentToken() {
+        if (isTokenIndexInBound())
+            return token.get(tokenIndex);
+        else return null;
+    }
+
+    private boolean isTokenIndexInBound() {
+        return tokenIndex < token.size();
     }
 }

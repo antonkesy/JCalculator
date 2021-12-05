@@ -4,6 +4,7 @@ import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.parser.double_linked_token.DoubleLinkedToken;
+import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
@@ -23,8 +24,9 @@ public class TestParser {
         testToken.add(new LiteralToken(42));
         testToken.add(new OperatorToken(OperatorType.ADD));
         testToken.add(new LiteralToken(73));
+        Tokenizer tokenizer = new Tokenizer(testToken);
 
-        Parser parser = new Parser(testToken);
+        Parser parser = new Parser(tokenizer);
         Node result = parser.getRootNode();
         if (!(result instanceof ExpressionNode)) fail();
         ExpressionNode root = (ExpressionNode) result;
@@ -45,8 +47,9 @@ public class TestParser {
         testToken.add(new LiteralToken(73));
         testToken.add(new OperatorToken(OperatorType.MULTIPLY));
         testToken.add(new LiteralToken(101));
+        Tokenizer tokenizer = new Tokenizer(testToken);
 
-        Parser parser = new Parser(testToken);
+        Parser parser = new Parser(tokenizer);
         Node result = parser.getRootNode();
         if (!(result instanceof ExpressionNode)) fail();
         ExpressionNode root = (ExpressionNode) result;

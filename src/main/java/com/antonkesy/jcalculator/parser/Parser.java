@@ -4,6 +4,7 @@ import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.parser.ast_nodes.TermNode;
+import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
@@ -12,13 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class Parser {
-    private int tokenIndex = -1;
-    private final Token[] token;
+    private final Tokenizer tokenizer;
     private Node lastNode;
     private Node root;
 
-    public Parser(List<Token> tokens) {
-        this.token = tokens.toArray(new Token[0]);
+    public Parser(Tokenizer tokenizer) {
+        this.tokenizer = tokenizer;
         buildAST();
     }
 
@@ -41,7 +41,7 @@ public final class Parser {
     }
 
     private Node parseNextToken() {
-        Token currentToken = getNextToken();
+        Token currentToken = tokenizer.nextToken();
         if (currentToken instanceof ValueToken) {
             return new FactorNode(currentToken);
         } else if (currentToken instanceof OperatorToken && lastNode != null) {
@@ -54,20 +54,5 @@ public final class Parser {
         return null;
     }
 
-
-    private Token getNextToken() {
-        ++tokenIndex;
-        return getCurrentToken();
-    }
-
-    private Token getCurrentToken() {
-        if (isTokenIndexInBound())
-            return token[tokenIndex];
-        else return null;
-    }
-
-    private boolean isTokenIndexInBound() {
-        return tokenIndex < token.length;
-    }
 
 }
