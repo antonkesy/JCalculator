@@ -1,5 +1,6 @@
 package com.antonkesy.jcalculator;
 
+import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ public class TestJCalculator {
     Token testString(String input) {
         try {
             return JCalculator.calculate(input);
-        } catch (IOException ignore) {
+        } catch (IOException | MissingTokenException ignore) {
         }
         return null;
     }
