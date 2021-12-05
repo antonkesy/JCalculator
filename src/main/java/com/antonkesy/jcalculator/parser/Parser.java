@@ -4,55 +4,64 @@ import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.parser.ast_nodes.TermNode;
+import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class Parser {
     private final Tokenizer tokenizer;
     private Node lastNode;
-    private Node root;
+    private final Node root;
 
-    public Parser(Tokenizer tokenizer) {
+    public Parser(Tokenizer tokenizer) throws MissingTokenException {
         this.tokenizer = tokenizer;
-        buildAST();
+        root = parse();
     }
 
     public Node getRootNode() {
         return root;
     }
 
-    private void buildAST() {
-        //TODO not working if last is double term token
-        Node result;
-        do {
-            result = parseNextToken();
-            if (result != null) {
-                if (lastNode == null) {
-                    lastNode = result;
-                }
-                root = result;
+    private Node parse() throws MissingTokenException {
+        Token next = tokenizer.peek();
+        if (next == null) return null;
+        Node parsed;
+        if (next instanceof OperatorToken) {
+            parsed = parseExpressionNode();
+        } else if (next instanceof ValueToken) {
+            parsed = parseFactorNode();
+            //check if there is something behind and use this as left
+            if (tokenizer.peek() != null) {
+                lastNode = parsed;
+                parsed = parse();
             }
-        } while (result != null);
+        } else {
+            throw new MissingTokenException();
+        }
+        return parsed;
     }
 
-    private Node parseNextToken() {
-        Token currentToken = tokenizer.nextToken();
-        if (currentToken instanceof ValueToken) {
-            return new FactorNode(currentToken);
-        } else if (currentToken instanceof OperatorToken && lastNode != null) {
-            Node copyLastNode = lastNode;
-            Node exp = new ExpressionNode(currentToken, copyLastNode, parseNextToken());
-            lastNode = exp;
-            return exp;
-        }
-        //TODO add all token
+    private TermNode parseTermNode() {
         return null;
     }
 
+    private FactorNode parseFactorNode() {
+        return new FactorNode(tokenizer.nextToken());
+    }
 
+    private ExpressionNode parseExpressionNode() throws MissingTokenException {
+        Token currentToken = tokenizer.nextToken();
+        Node left = lastNode;
+        Node right = parse();
+        if (expressionNodeExpect(left) && expressionNodeExpect(right))
+            return new ExpressionNode(currentToken, left, right);
+        //TODO actually wrong token
+        throw new MissingTokenException();
+    }
+
+    private boolean expressionNodeExpect(Node toCheck) {
+        return (toCheck instanceof ExpressionNode || toCheck instanceof FactorNode);
+    }
 }
