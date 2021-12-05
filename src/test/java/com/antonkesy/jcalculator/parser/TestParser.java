@@ -26,16 +26,20 @@ public class TestParser {
         testToken.add(new LiteralToken(73));
         Tokenizer tokenizer = new Tokenizer(testToken);
 
-        Parser parser = new Parser(tokenizer);
-        Node result = parser.getRootNode();
-        if (!(result instanceof ExpressionNode)) fail();
-        ExpressionNode root = (ExpressionNode) result;
-        FactorNode left = (FactorNode) root.leftChild;
-        FactorNode right = (FactorNode) root.rightChild;
+        try {
+            Parser parser = new Parser(tokenizer);
+            Node result = parser.getRootNode();
+            if (!(result instanceof ExpressionNode)) fail();
+            ExpressionNode root = (ExpressionNode) result;
+            FactorNode left = (FactorNode) root.leftChild;
+            FactorNode right = (FactorNode) root.rightChild;
 
-        assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), left, right), root);
-        assertEquals(new FactorNode(new LiteralToken(42)), left);
-        assertEquals(new FactorNode(new LiteralToken(73)), right);
+            assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), left, right), root);
+            assertEquals(new FactorNode(new LiteralToken(42)), left);
+            assertEquals(new FactorNode(new LiteralToken(73)), right);
+        } catch (Exception e) {
+            fail();
+        }
     }
 
     @Test
@@ -49,17 +53,22 @@ public class TestParser {
         testToken.add(new LiteralToken(101));
         Tokenizer tokenizer = new Tokenizer(testToken);
 
-        Parser parser = new Parser(tokenizer);
-        Node result = parser.getRootNode();
-        if (!(result instanceof ExpressionNode)) fail();
-        ExpressionNode root = (ExpressionNode) result;
-        ExpressionNode left = (ExpressionNode) root.leftChild; //exp 42 + 73
-        FactorNode right = (FactorNode) root.rightChild; // 101
+        try {
+            Parser parser = new Parser(tokenizer);
+            Node result = parser.getRootNode();
+            if (!(result instanceof ExpressionNode)) fail();
+            ExpressionNode root = (ExpressionNode) result;
+            FactorNode left = (FactorNode) root.leftChild; //42
+            ExpressionNode right = (ExpressionNode) root.rightChild; // (73 * 101)
 
-        FactorNode node42 = new FactorNode(new LiteralToken(42));
-        FactorNode node73 = new FactorNode(new LiteralToken(73));
-        assertEquals(new ExpressionNode(new OperatorToken(OperatorType.MULTIPLY), left, right), root);
-        assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), node42, node73), left);
-        assertEquals(new FactorNode(new LiteralToken(101)), right);
+            FactorNode node101 = new FactorNode(new LiteralToken(101));
+            FactorNode node73 = new FactorNode(new LiteralToken(73));
+            assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), left, right), root);
+            assertEquals(new ExpressionNode(new OperatorToken(OperatorType.MULTIPLY), node73, node101), right);
+            assertEquals(new FactorNode(new LiteralToken(42)), left);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 }
