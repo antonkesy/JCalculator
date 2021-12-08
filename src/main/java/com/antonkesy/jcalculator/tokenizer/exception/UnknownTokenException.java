@@ -1,4 +1,4 @@
-package com.antonkesy.jcalculator.tokenizer.token.exception;
+package com.antonkesy.jcalculator.tokenizer.exception;
 
 import java.io.IOException;
 

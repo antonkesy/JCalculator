@@ -2,7 +2,7 @@ package com.antonkesy.jcalculator.tokenizer;
 
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
-import com.antonkesy.jcalculator.tokenizer.token.exception.UnknownTokenException;
+import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;

@@ -7,7 +7,7 @@ import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
-import com.antonkesy.jcalculator.tokenizer.token.exception.UnknownTokenException;
+import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 

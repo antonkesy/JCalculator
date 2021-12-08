@@ -8,6 +8,7 @@ import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
+import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
 public final class Parser {
@@ -41,10 +42,6 @@ public final class Parser {
             throw new MissingTokenException();
         }
         return parsed;
-    }
-
-    private TermNode parseTermNode() {
-        return null;
     }
 
     private FactorNode parseFactorNode() {
