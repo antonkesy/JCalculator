@@ -3,7 +3,6 @@ package com.antonkesy.jcalculator.parser;
 import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
-import com.antonkesy.jcalculator.parser.double_linked_token.DoubleLinkedToken;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
