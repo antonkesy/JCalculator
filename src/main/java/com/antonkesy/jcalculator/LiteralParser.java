@@ -6,8 +6,14 @@ import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 
 public class LiteralParser implements IParser {
+    private final Tokenizer tokenizer;
+
+    public LiteralParser(Tokenizer tokenizer) {
+        this.tokenizer = tokenizer;
+    }
+
     @Override
-    public Node parse(Tokenizer tokenizer) {
+    public Node parse() {
         return new FactorNode(tokenizer.nextToken());
     }
 }
