@@ -27,7 +27,7 @@ public class TestParser {
 
         try {
             Parser parser = new Parser(tokenizer);
-            Node result = parser.getRootNode();
+            Node result = parser.parse();
             if (!(result instanceof ExpressionNode)) fail();
             ExpressionNode root = (ExpressionNode) result;
             FactorNode left = (FactorNode) root.leftChild;
@@ -54,7 +54,7 @@ public class TestParser {
 
         try {
             Parser parser = new Parser(tokenizer);
-            Node result = parser.getRootNode();
+            Node result = parser.parse();
             if (!(result instanceof ExpressionNode)) fail();
             ExpressionNode root = (ExpressionNode) result;
             FactorNode left = (FactorNode) root.leftChild; //42

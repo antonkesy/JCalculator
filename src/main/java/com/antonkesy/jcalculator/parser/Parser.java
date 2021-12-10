@@ -9,21 +9,15 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 
-public final class Parser {
+public final class Parser implements IParser {
     private final Tokenizer tokenizer;
-    private final Node root;
 
     public Parser(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
-        root = parse();
     }
 
-    public Node getRootNode() {
-        return root;
-    }
-
-    private Node parse() {
-        MultiParser multiParser = new MultiParser(new LiteralParser(), tokenizer);
+    public Node parse() {
+        MultiParser multiParser = new MultiParser(new LiteralParser(tokenizer), tokenizer);
         AddParser addParser = new AddParser(multiParser, tokenizer);
         return addParser.parse();
     }

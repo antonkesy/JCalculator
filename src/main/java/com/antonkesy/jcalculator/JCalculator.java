@@ -14,9 +14,9 @@ import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 import java.util.List;
 
 public class JCalculator {
-    public static int calculate(Tokenizer tokenizer) throws MissingTokenException {
+    public static int calculate(Tokenizer tokenizer)  {
         Parser parser = new Parser(tokenizer);
-        Node rootAst = parser.getRootNode();
+        Node rootAst = parser.parse();
         return calculateAst(rootAst);
     }
 
@@ -24,7 +24,7 @@ public class JCalculator {
         return calculate(new Tokenizer(expressionString));
     }
 
-    public static int calculate(List<Token> tokenList) throws MissingTokenException {
+    public static int calculate(List<Token> tokenList) {
         Tokenizer tokenizer = new Tokenizer(tokenList);
         return calculate(tokenizer);
     }
