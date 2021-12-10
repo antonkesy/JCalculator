@@ -23,8 +23,8 @@ public final class Parser {
     }
 
     private Node parse() {
-        MultiParser multiParser = new MultiParser(new LiteralParser());
-        AddParser addParser = new AddParser(multiParser);
-        return addParser.parse(tokenizer);
+        MultiParser multiParser = new MultiParser(new LiteralParser(), tokenizer);
+        AddParser addParser = new AddParser(multiParser, tokenizer);
+        return addParser.parse();
     }
 }

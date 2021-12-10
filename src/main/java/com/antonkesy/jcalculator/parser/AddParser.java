@@ -1,13 +1,14 @@
 package com.antonkesy.jcalculator.parser;
 
+import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 
 public class AddParser extends PartialParser {
 
-    protected AddParser(IParser nextHigherPartialParser) {
-        super(nextHigherPartialParser);
+    protected AddParser(IParser nextHigherPartialParser, Tokenizer tokenizer) {
+        super(nextHigherPartialParser, tokenizer);
     }
 
     @Override
