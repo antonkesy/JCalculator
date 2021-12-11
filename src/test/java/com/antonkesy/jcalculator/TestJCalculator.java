@@ -71,5 +71,11 @@ public class TestJCalculator {
         assertTrue(testString("1*1+1", 2));
         assertTrue(testString("3+7*10", 73));
         assertTrue(testString("3*7+10", 31));
+        assertTrue(testString("3*(7+10)", 51));
+    }
+
+    @Test
+    void testP() {
+        assertTrue(testString("3*(3+1)", 12));
     }
 }
