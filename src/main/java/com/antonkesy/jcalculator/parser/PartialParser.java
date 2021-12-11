@@ -17,18 +17,12 @@ public abstract class PartialParser implements IParser {
 
     public Node parse() {
         Node left = nextHigherPartialParser.parse();
-        while (isSamePrecedenceAvailable(tokenizer.peek())) {
+        while (nextIsNotExpectedEnd(tokenizer.peek())) {
             left = new ExpressionNode(tokenizer.nextToken(), left, nextHigherPartialParser.parse());
         }
         return left;
     }
 
-    private boolean isSamePrecedenceAvailable(Token token) {
-        if (token == null) return false;
-        return isInstanceOf(token) && isSameType(token);
-    }
+    protected abstract boolean nextIsNotExpectedEnd(Token token);
 
-    protected abstract boolean isSameType(Token token);
-
-    protected abstract boolean isInstanceOf(Token token);
 }

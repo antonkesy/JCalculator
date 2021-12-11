@@ -5,23 +5,26 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 
-public class AddParser extends PartialParser {
+public class OperatorParser extends PartialParser {
 
-    protected AddParser(IParser nextHigherPartialParser, Tokenizer tokenizer) {
+    private final OperatorType[] typeOfOperators;
+
+    protected OperatorParser(IParser nextHigherPartialParser, Tokenizer tokenizer, OperatorType[] typeOfOperators) {
         super(nextHigherPartialParser, tokenizer);
+        this.typeOfOperators = typeOfOperators;
     }
 
     @Override
+    protected boolean nextIsNotExpectedEnd(Token token) {
+        if (token == null) return false;
+        return token instanceof OperatorToken && isSameType(token);
+    }
+
     protected boolean isSameType(Token token) {
         OperatorToken opTok = (OperatorToken) token;
-        for (OperatorType type : new OperatorType[]{OperatorType.ADD, OperatorType.SUB}) {
+        for (OperatorType type : typeOfOperators) {
             if (type == opTok.operator) return true;
         }
         return false;
-    }
-
-    @Override
-    protected boolean isInstanceOf(Token token) {
-        return token instanceof OperatorToken;
     }
 }
