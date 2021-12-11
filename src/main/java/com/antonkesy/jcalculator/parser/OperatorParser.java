@@ -1,5 +1,7 @@
 package com.antonkesy.jcalculator.parser;
 
+import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
+import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
@@ -12,6 +14,15 @@ public class OperatorParser extends PartialParser {
     protected OperatorParser(IParser nextHigherPartialParser, Tokenizer tokenizer, OperatorType[] typeOfOperators) {
         super(nextHigherPartialParser, tokenizer);
         this.typeOfOperators = typeOfOperators;
+    }
+
+    @Override
+    public Node parse() {
+        Node left = nextHigherPartialParser.parse();
+        while (nextIsNotExpectedEnd(tokenizer.peek())) {
+            left = new ExpressionNode(tokenizer.nextToken(), left, nextHigherPartialParser.parse());
+        }
+        return left;
     }
 
     @Override

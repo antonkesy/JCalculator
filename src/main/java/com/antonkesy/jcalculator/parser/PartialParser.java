@@ -7,21 +7,16 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 
 public abstract class PartialParser implements IParser {
 
-    private final Tokenizer tokenizer;
-    private final IParser nextHigherPartialParser;
+    //TODO merge with operator parser?
+    protected final Tokenizer tokenizer;
+    protected final IParser nextHigherPartialParser;
 
     protected PartialParser(IParser nextHigherPartialParser, Tokenizer tokenizer) {
         this.nextHigherPartialParser = nextHigherPartialParser;
         this.tokenizer = tokenizer;
     }
 
-    public Node parse() {
-        Node left = nextHigherPartialParser.parse();
-        while (nextIsNotExpectedEnd(tokenizer.peek())) {
-            left = new ExpressionNode(tokenizer.nextToken(), left, nextHigherPartialParser.parse());
-        }
-        return left;
-    }
+    public abstract Node parse();
 
     protected abstract boolean nextIsNotExpectedEnd(Token token);
 
