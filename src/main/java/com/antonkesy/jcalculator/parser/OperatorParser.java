@@ -16,7 +16,6 @@ public class OperatorParser extends PartialParser {
 
     @Override
     protected boolean nextIsNotExpectedEnd(Token token) {
-        if (token == null) return false;
         return token instanceof OperatorToken && isSameType(token);
     }
 
