@@ -1,6 +1,5 @@
 package com.antonkesy.jcalculator.parser;
 
-import com.antonkesy.jcalculator.LiteralParser;
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;

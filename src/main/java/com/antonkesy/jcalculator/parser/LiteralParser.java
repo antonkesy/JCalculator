@@ -1,4 +1,4 @@
-package com.antonkesy.jcalculator;
+package com.antonkesy.jcalculator.parser;
 
 import com.antonkesy.jcalculator.parser.IParser;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
