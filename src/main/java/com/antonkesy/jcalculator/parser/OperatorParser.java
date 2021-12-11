@@ -7,12 +7,14 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 
-public class OperatorParser extends PartialParser {
-
+public class OperatorParser implements IParser {
+    private final Tokenizer tokenizer;
+    private final IParser nextHigherPartialParser;
     private final OperatorType[] typeOfOperators;
 
     protected OperatorParser(IParser nextHigherPartialParser, Tokenizer tokenizer, OperatorType[] typeOfOperators) {
-        super(nextHigherPartialParser, tokenizer);
+        this.nextHigherPartialParser = nextHigherPartialParser;
+        this.tokenizer = tokenizer;
         this.typeOfOperators = typeOfOperators;
     }
 
@@ -25,7 +27,6 @@ public class OperatorParser extends PartialParser {
         return left;
     }
 
-    @Override
     protected boolean nextIsNotExpectedEnd(Token token) {
         return token instanceof OperatorToken && isSameType(token);
     }

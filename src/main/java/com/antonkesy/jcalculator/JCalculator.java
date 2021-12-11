@@ -5,16 +5,16 @@ import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
-import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
+import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
 import java.util.List;
 
 public class JCalculator {
-    public static int calculate(Tokenizer tokenizer)  {
+    public static int calculate(Tokenizer tokenizer) {
         Parser parser = new Parser(tokenizer);
         Node rootAst = parser.parse();
         return calculateAst(rootAst);
