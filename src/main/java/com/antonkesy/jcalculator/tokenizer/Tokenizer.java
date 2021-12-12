@@ -41,11 +41,9 @@ public class Tokenizer {
     protected static Token getTokenFromString(String stringToken) throws UnknownTokenException {
         Token token;
         //check token of types
-        token = getTokenOfType(stringToken);
-        if (token != null) return token;
+        if ((token = getTokenOfType(stringToken)) != null) return token;
         //check literal token
-        token = getLiteralToken(stringToken);
-        if (token != null) return token;
+        if ((token = getLiteralToken(stringToken)) != null) return token;
         throw new UnknownTokenException(stringToken);
     }
 
