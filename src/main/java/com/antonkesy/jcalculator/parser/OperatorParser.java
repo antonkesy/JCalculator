@@ -9,20 +9,20 @@ import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 
 public class OperatorParser implements IParser {
     private final Tokenizer tokenizer;
-    private final IParser nextHigherPartialParser;
+    private final IParser nextHigher;
     private final OperatorType[] typeOfOperators;
 
     protected OperatorParser(IParser nextHigherPartialParser, Tokenizer tokenizer, OperatorType[] typeOfOperators) {
-        this.nextHigherPartialParser = nextHigherPartialParser;
+        this.nextHigher = nextHigherPartialParser;
         this.tokenizer = tokenizer;
         this.typeOfOperators = typeOfOperators;
     }
 
     @Override
     public Node parse() {
-        Node left = nextHigherPartialParser.parse();
+        Node left = nextHigher.parse();
         while (nextIsNotExpectedEnd(tokenizer.peek())) {
-            left = new ExpressionNode(tokenizer.nextToken(), left, nextHigherPartialParser.parse());
+            left = new ExpressionNode(tokenizer.nextToken(), left, nextHigher.parse());
         }
         return left;
     }
