@@ -21,13 +21,13 @@ public class OperatorParser implements IParser {
     @Override
     public Node parse() {
         Node left = nextHigher.parse();
-        while (nextIsNotExpectedEnd(tokenizer.peek())) {
+        while (isSameTokenType(tokenizer.peek())) {
             left = new ExpressionNode(tokenizer.nextToken(), left, nextHigher.parse());
         }
         return left;
     }
 
-    protected boolean nextIsNotExpectedEnd(Token token) {
+    protected boolean isSameTokenType(Token token) {
         return token instanceof OperatorToken && isSameType(token);
     }
 

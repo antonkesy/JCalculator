@@ -57,6 +57,9 @@ public class JCalculator {
             case DIVIDE:
                 result = leftValue / rightValue;
                 break;
+            case EXPONENT:
+                result = (int) Math.pow(leftValue, rightValue);
+                break;
         }
         return result;
     }

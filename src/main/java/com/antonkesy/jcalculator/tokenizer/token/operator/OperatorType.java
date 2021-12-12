@@ -4,7 +4,7 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 
 public enum OperatorType implements TypeRepresentation {
-    ADD("+"), SUB("-"), MULTIPLY("*"), DIVIDE("/");
+    ADD("+"), SUB("-"), MULTIPLY("*"), DIVIDE("/"), EXPONENT("^");
 
     public final String representation;
 

@@ -12,10 +12,11 @@ public final class Parser implements IParser {
     }
 
     public Node parse() {
-        IParser parenthesesParser = new ParenthesesParser(this, new LiteralParser(tokenizer));
+        IParser parenthesesParser = new ParenthesesParser(this, new LiteralParser(tokenizer), tokenizer);
+        IParser exponentParser = new OperatorParser(parenthesesParser, tokenizer, new OperatorType[]{OperatorType.EXPONENT});
         OperatorParser multiParser =
                 new OperatorParser(
-                        parenthesesParser,
+                        exponentParser,
                         tokenizer,
                         new OperatorType[]{OperatorType.MULTIPLY, OperatorType.DIVIDE}
                 );

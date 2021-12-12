@@ -7,7 +7,6 @@ import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
-import com.antonkesy.jcalculator.tokenizer.token.term.ExponentToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
@@ -127,10 +126,10 @@ public class TestTokenizer {
 
     @Test
     void testExponent() {
-        testTokenizeCase(new ExponentToken(), "^");
+        testTokenizeCase(new OperatorToken(OperatorType.EXPONENT), "^");
         ArrayList<Token> expectList = new ArrayList<>();
         expectList.add(new LiteralToken(2));
-        expectList.add(new ExponentToken());
+        expectList.add(new OperatorToken(OperatorType.EXPONENT));
         expectList.add(new LiteralToken(2));
         testTokenizeCase(expectList, "2^2");
     }

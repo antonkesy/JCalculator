@@ -5,7 +5,6 @@ import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
-import com.antonkesy.jcalculator.tokenizer.token.term.ExponentType;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 
@@ -64,8 +63,7 @@ public class Tokenizer {
         return enumRepresentations(
                 SeparatorType.values()) + ' ' +
                 enumRepresentations(ConstantType.values()) + ' ' +
-                enumRepresentations(OperatorType.values()) + ' ' +
-                enumRepresentations(ExponentType.values()) + ' ';
+                enumRepresentations(OperatorType.values()) + ' ';
     }
 
     /**
@@ -98,7 +96,7 @@ public class Tokenizer {
     }
 
     protected static TypeRepresentation[][] getAllTypes() {
-        return new TypeRepresentation[][]{OperatorType.values(), ConstantType.values(), SeparatorType.values(), ExponentType.values()};
+        return new TypeRepresentation[][]{OperatorType.values(), ConstantType.values(), SeparatorType.values()};
     }
 
     protected static Token getLiteralToken(String tokenString) {
