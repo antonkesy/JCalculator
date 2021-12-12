@@ -7,6 +7,7 @@ import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
+import com.antonkesy.jcalculator.tokenizer.token.term.ExponentToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
@@ -72,6 +73,12 @@ public class TestTokenizer {
         }
     }
 
+    void testTokenizeCase(Token token, String input) {
+        ArrayList<Token> tokenList = new ArrayList<>();
+        tokenList.add(token);
+        testTokenizeCase(tokenList, input);
+    }
+
     void testTokenizeCase(ArrayList<Token> expected, String input) {
         try {
             assertEquals(expected, Tokenizer.tokenize(input));
@@ -83,19 +90,9 @@ public class TestTokenizer {
 
     @Test
     void testTokenizeSingleTokenList() {
-        ArrayList<Token> singleTokenList = new ArrayList<>();
-        singleTokenList.add(new LiteralToken(42));
-        testTokenizeCase(singleTokenList, "42");
-        singleTokenList.clear();
-
-        singleTokenList.add(new ConstantToken(ConstantType.PI));
-        testTokenizeCase(singleTokenList, ConstantType.PI.getTypeRepresentation());
-        singleTokenList.clear();
-
-        singleTokenList.add(new OperatorToken(OperatorType.ADD));
-        testTokenizeCase(singleTokenList, "+");
-        singleTokenList.clear();
-
+        testTokenizeCase(new LiteralToken(42), "42");
+        testTokenizeCase(new ConstantToken(ConstantType.PI), ConstantType.PI.getTypeRepresentation());
+        testTokenizeCase(new OperatorToken(OperatorType.ADD), "+");
         assertThrows(UnknownTokenException.class, () -> Tokenizer.tokenize("un"));
         assertThrows(UnknownTokenException.class, () -> Tokenizer.tokenize(""));
     }
@@ -126,5 +123,15 @@ public class TestTokenizer {
         testTokenizeCase(multiTokenList, "(42 /73)");
         testTokenizeCase(multiTokenList, "(42 / 73)");
         testTokenizeCase(multiTokenList, "( 42   /73)");
+    }
+
+    @Test
+    void testExponent() {
+        testTokenizeCase(new ExponentToken(), "^");
+        ArrayList<Token> expectList = new ArrayList<>();
+        expectList.add(new LiteralToken(2));
+        expectList.add(new ExponentToken());
+        expectList.add(new LiteralToken(2));
+        testTokenizeCase(expectList, "2^2");
     }
 }

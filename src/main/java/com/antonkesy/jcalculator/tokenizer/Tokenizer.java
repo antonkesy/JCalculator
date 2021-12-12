@@ -5,6 +5,7 @@ import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
+import com.antonkesy.jcalculator.tokenizer.token.term.ExponentType;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 
@@ -60,7 +61,11 @@ public class Tokenizer {
     }
 
     private static String getAllSeparateByChars() {
-        return enumRepresentations(SeparatorType.values()) + ' ' + enumRepresentations(ConstantType.values()) + ' ' + enumRepresentations(OperatorType.values()) + "  ";
+        return enumRepresentations(
+                SeparatorType.values()) + ' ' +
+                enumRepresentations(ConstantType.values()) + ' ' +
+                enumRepresentations(OperatorType.values()) + ' ' +
+                enumRepresentations(ExponentType.values()) + ' ';
     }
 
     /**
@@ -93,14 +98,13 @@ public class Tokenizer {
     }
 
     protected static TypeRepresentation[][] getAllTypes() {
-        return new TypeRepresentation[][]{OperatorType.values(), ConstantType.values(), SeparatorType.values()};
+        return new TypeRepresentation[][]{OperatorType.values(), ConstantType.values(), SeparatorType.values(), ExponentType.values()};
     }
 
     protected static Token getLiteralToken(String tokenString) {
         if (tokenString.matches("([-+])*[0-9]+")) {
             return new LiteralToken(Integer.parseInt(tokenString));
         }
-
         return null;
     }
 
