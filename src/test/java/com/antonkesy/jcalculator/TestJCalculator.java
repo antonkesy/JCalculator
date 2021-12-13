@@ -1,8 +1,6 @@
 package com.antonkesy.jcalculator;
 
 import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
-import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
-import com.antonkesy.jcalculator.tokenizer.token.Token;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -19,7 +17,8 @@ public class TestJCalculator {
             } else {
                 fail("expected = " + expected + " actual = " + result);
             }
-        } catch (IOException | MissingTokenException ignore) {
+        } catch (IOException | MissingTokenException e) {
+            e.printStackTrace();
             fail();
         }
         return false;
@@ -81,9 +80,11 @@ public class TestJCalculator {
     }
 
     @Test
-    void testP() {
+    void testParentheses() {
         assertTrue(testString("3*(3+1)", 12));
         assertTrue(testString("3*((3+1)*5)", 60));
+        assertTrue(testString("3*(3)", 9));
+        assertTrue(testString("3()", 3));
     }
 
     @Test
@@ -96,4 +97,17 @@ public class TestJCalculator {
         assertTrue(testString("(4*3)^2", 144));
     }
 
+    @Test
+    void testRandom() {
+        //actually −31959,679
+        assertTrue(testString("(2550*12+17)-(122*513)+3*(14*221-3*4+4*3+13)/1000", -31960));
+    }
+
+    //TODO add sign
+    /*
+    @Test
+    void testSignedFactor() {
+        assertTrue(testString("-1", -1));
+    }
+     */
 }
