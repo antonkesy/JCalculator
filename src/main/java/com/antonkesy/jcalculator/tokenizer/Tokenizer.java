@@ -4,6 +4,7 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
+import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
@@ -68,8 +69,11 @@ public class Tokenizer {
         //check token of types
         if ((token = getTokenOfType(stringToken)) != null)
             return token;
-        //check literal token
-        if (!(lastToken instanceof ValueToken) && (token = getLiteralToken(stringToken)) != null)
+        //check signed literal token
+        if (nextCouldBeSignedLiteralToken(lastToken) && (token = getSignedLiteralToken(stringToken)) != null)
+            return token;
+        //check unsigned literal token
+        if ((token = getLiteralToken(stringToken)) != null)
             return token;
         return null;
     }
@@ -91,6 +95,13 @@ public class Tokenizer {
     }
 
     private Token getLiteralToken(String tokenString) {
+        if (tokenString.matches("[0-9]+(\\.[0-9]*)?")) {
+            return new LiteralToken(new BigDecimal(tokenString));
+        }
+        return null;
+    }
+
+    private Token getSignedLiteralToken(String tokenString) {
         if (tokenString.matches("([-+])?[0-9]+(\\.[0-9]*)?")) {
             return new LiteralToken(new BigDecimal(tokenString));
         }
@@ -116,5 +127,15 @@ public class Tokenizer {
 
     private boolean isTokenIndexInBound() {
         return tokenIndex < token.size();
+    }
+
+    /**
+     * signed literals can't be after ')' or other literals
+     *
+     * @param lastToken
+     * @return
+     */
+    private boolean nextCouldBeSignedLiteralToken(Token lastToken) {
+        return !(lastToken instanceof ValueToken || lastToken instanceof SeparatorToken && ((SeparatorToken) lastToken).separatorType == SeparatorType.CLOSE);
     }
 }
