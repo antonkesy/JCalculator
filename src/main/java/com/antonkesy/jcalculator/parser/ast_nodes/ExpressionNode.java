@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class ExpressionNode extends Node {
 
-    public Node leftChild, rightChild;
+    public final Node leftChild, rightChild;
 
     public ExpressionNode(Token token, Node leftChild, Node rightChild) {
         super(token);
