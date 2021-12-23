@@ -3,7 +3,6 @@ package com.antonkesy.jcalculator.tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
-import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
@@ -32,28 +31,30 @@ public class Tokenizer {
 
     private void tokenize(String input) throws UnknownTokenException {
         if (input.isEmpty()) throw new UnknownTokenException();
+        //remove spaces from input
+        input = input.replace(" ", "");
+
         token = new LinkedList<>();
         StringBuilder bufferedToken = new StringBuilder();
         Token lastAddedToken = null;
         Token lastPossibleToken = null;
-        //TODO with next
-        for (int i = 0; i < input.length(); ++i) {
-            //skip spaces
-            if (input.charAt(i) == ' ') continue;
-            bufferedToken.append(input.charAt(i));
+        int inputIndex = 0;
+        while (inputIndex < input.length()) {
+            bufferedToken.append(input.charAt(inputIndex));
             Token currentPossibleToken = getTokenFromString(bufferedToken.toString(), lastAddedToken);
-            //if current token is not possible then use last possible
+            //if current token is not possible then use last possible or continue trying
             if (currentPossibleToken == null && lastPossibleToken != null) {
                 lastAddedToken = lastPossibleToken;
-                token.add(lastAddedToken);
                 lastPossibleToken = null;
+                token.add(lastAddedToken);
                 bufferedToken.setLength(0);
-                --i;
+                --inputIndex;
             } else {
                 lastPossibleToken = currentPossibleToken;
             }
+            ++inputIndex;
         }
-        //add rest
+        //add rest when input is completely read
         if (lastPossibleToken != null) {
             token.add(lastPossibleToken);
         } else {
