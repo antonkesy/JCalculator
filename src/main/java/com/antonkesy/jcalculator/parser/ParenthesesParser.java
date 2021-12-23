@@ -8,7 +8,7 @@ import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
 
 public class ParenthesesParser implements IParser {
 
-    Tokenizer tokenizer;
+    private final Tokenizer tokenizer;
     private final IParser rootParser;
     private final IParser nextHigher;
 
