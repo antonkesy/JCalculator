@@ -99,15 +99,12 @@ public class TestJCalculator {
 
     @Test
     void testRandom() {
-        //actually −31959,679
-        assertTrue(testString("(2550*12+17)-(122*513)+3*(14*221-3*4+4*3+13)/1000", -31960));
+        //actually −59586.79
+        assertTrue(testString("(250*12+17)-(122*513)+3*(14*221-3*4+4*3+13)/100", -59476));
     }
 
-    //TODO add sign
-    /*
     @Test
     void testSignedFactor() {
         assertTrue(testString("-1", -1));
     }
-     */
 }

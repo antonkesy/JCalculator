@@ -1,7 +1,6 @@
 package com.antonkesy.jcalculator.tokenizer;
 
 import com.antonkesy.jcalculator.tokenizer.token.Token;
-import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
@@ -18,56 +17,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTokenizer {
 
-    void testGetTokenOfTypeCase(TypeRepresentation expected) {
-        assertEquals(expected.createToken(), Tokenizer.getTokenOfType(expected.getTypeRepresentation()));
-    }
-
-    @Test
-    void testGetTokenOfType() {
-        for (TypeRepresentation[] types : Tokenizer.getAllTypes()) {
-            for (TypeRepresentation type : types) {
-                testGetTokenOfTypeCase(type);
-            }
-        }
-    }
-
-    @Test
-    void testGetOptionsRegex() {
-        // \Q*\E -> * not read as regex
-        assertEquals("(\\Qa\\E)", Tokenizer.getOptionRegex("a"));
-        assertEquals("(\\Qa\\E|\\Qb\\E)", Tokenizer.getOptionRegex("a b"));
-        assertEquals("(\\Qa\\E|\\Qab\\E)", Tokenizer.getOptionRegex("a ab"));
-    }
-
-    void testGetTokenFromStringCase(TypeRepresentation type) {
-        try {
-            assertEquals(type.createToken(), Tokenizer.getTokenFromString(type.getTypeRepresentation()));
-        } catch (UnknownTokenException e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
-    @Test
-    void testGetTokenFromStringTypes() {
-        for (TypeRepresentation[] types : Tokenizer.getAllTypes()) {
-            for (TypeRepresentation type : types) {
-                testGetTokenFromStringCase(type);
-            }
-        }
-    }
-
     @Test
     void testGetTokenFromStringLiteral() {
         try {
-            assertEquals(new LiteralToken(42), Tokenizer.getTokenFromString("42"));
-            assertEquals(new LiteralToken(-42), Tokenizer.getTokenFromString("-42"));
-            assertEquals(new LiteralToken(123), Tokenizer.getTokenFromString("0123"));
+            testTokenizeCase(new LiteralToken(42), "42");
+            testTokenizeCase(new LiteralToken(-42), "-42");
+            testTokenizeCase(new LiteralToken(123), "0123");
+            testTokenizeCase(new LiteralToken(0), "0");
 
-            assertNull(Tokenizer.getLiteralToken("+"));
-            assertNull(Tokenizer.getLiteralToken("a"));
+            assertEquals(new LiteralToken(123), new Tokenizer("0123").getToken().get(0));
+            assertEquals(new LiteralToken(123), new Tokenizer("0123").getToken().get(0));
         } catch (UnknownTokenException e) {
-            e.printStackTrace();
             fail();
         }
     }
@@ -80,7 +40,7 @@ public class TestTokenizer {
 
     void testTokenizeCase(ArrayList<Token> expected, String input) {
         try {
-            assertEquals(expected, Tokenizer.tokenize(input));
+            assertEquals(expected, new Tokenizer(input).getToken());
         } catch (UnknownTokenException e) {
             e.printStackTrace();
             fail();
@@ -92,8 +52,8 @@ public class TestTokenizer {
         testTokenizeCase(new LiteralToken(42), "42");
         testTokenizeCase(new ConstantToken(ConstantType.PI), ConstantType.PI.getTypeRepresentation());
         testTokenizeCase(new OperatorToken(OperatorType.ADD), "+");
-        assertThrows(UnknownTokenException.class, () -> Tokenizer.tokenize("un"));
-        assertThrows(UnknownTokenException.class, () -> Tokenizer.tokenize(""));
+        assertThrows(UnknownTokenException.class, () -> new Tokenizer("un"));
+        assertThrows(UnknownTokenException.class, () -> new Tokenizer(""));
     }
 
     @Test
@@ -132,5 +92,19 @@ public class TestTokenizer {
         expectList.add(new OperatorToken(OperatorType.EXPONENT));
         expectList.add(new LiteralToken(2));
         testTokenizeCase(expectList, "2^2");
+    }
+
+    @Test
+    void testSignedLiterals(){
+        //42+(-3+5) = 44
+        ArrayList<Token> expected = new ArrayList<>();
+        expected.add(new LiteralToken(42));
+        expected.add(new OperatorToken(OperatorType.ADD));
+        expected.add(new SeparatorToken(SeparatorType.OPEN));
+        expected.add(new LiteralToken(-3));
+        expected.add(new OperatorToken(OperatorType.ADD));
+        expected.add(new LiteralToken(5));
+        expected.add(new SeparatorToken(SeparatorType.CLOSE));
+        testTokenizeCase(expected,"42+(-3+5)");
     }
 }
