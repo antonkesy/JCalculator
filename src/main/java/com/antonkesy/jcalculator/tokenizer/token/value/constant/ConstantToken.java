@@ -2,6 +2,8 @@ package com.antonkesy.jcalculator.tokenizer.token.value.constant;
 
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
+import java.math.BigDecimal;
+
 public class ConstantToken implements ValueToken {
     private final ConstantType type;
 
@@ -10,7 +12,7 @@ public class ConstantToken implements ValueToken {
     }
 
     @Override
-    public int getValue() {
+    public BigDecimal getValue() {
         return type.value;
     }
 

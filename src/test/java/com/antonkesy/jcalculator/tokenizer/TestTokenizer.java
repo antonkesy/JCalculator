@@ -11,6 +11,7 @@ import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,13 +21,13 @@ public class TestTokenizer {
     @Test
     void testGetTokenFromStringLiteral() {
         try {
-            testTokenizeCase(new LiteralToken(42), "42");
-            testTokenizeCase(new LiteralToken(-42), "-42");
-            testTokenizeCase(new LiteralToken(123), "0123");
-            testTokenizeCase(new LiteralToken(0), "0");
+            testTokenizeCase(new LiteralToken(new BigDecimal(42)), "42");
+            testTokenizeCase(new LiteralToken(new BigDecimal(-42)), "-42");
+            testTokenizeCase(new LiteralToken(new BigDecimal(123)), "0123");
+            testTokenizeCase(new LiteralToken(BigDecimal.ZERO), "0");
 
-            assertEquals(new LiteralToken(123), new Tokenizer("0123").getToken().get(0));
-            assertEquals(new LiteralToken(123), new Tokenizer("0123").getToken().get(0));
+            assertEquals(new LiteralToken(new BigDecimal(123)), new Tokenizer("0123").getToken().get(0));
+            assertEquals(new LiteralToken(new BigDecimal(123)), new Tokenizer("0123").getToken().get(0));
         } catch (UnknownTokenException e) {
             fail();
         }
@@ -49,7 +50,7 @@ public class TestTokenizer {
 
     @Test
     void testTokenizeSingleTokenList() {
-        testTokenizeCase(new LiteralToken(42), "42");
+        testTokenizeCase(new LiteralToken(new BigDecimal(42)), "42");
         testTokenizeCase(new ConstantToken(ConstantType.PI), ConstantType.PI.getTypeRepresentation());
         testTokenizeCase(new OperatorToken(OperatorType.ADD), "+");
         assertThrows(UnknownTokenException.class, () -> new Tokenizer("un"));
@@ -59,7 +60,7 @@ public class TestTokenizer {
     @Test
     void testTokenizeMultiple1() {
         ArrayList<Token> multiTokenList = new ArrayList<>();
-        multiTokenList.add(new LiteralToken(42));
+        multiTokenList.add(new LiteralToken(new BigDecimal(42)));
         multiTokenList.add(new OperatorToken(OperatorType.ADD));
         multiTokenList.add(new ConstantToken(ConstantType.PI));
 
@@ -73,9 +74,9 @@ public class TestTokenizer {
     void testTokenizeMultiple2() {
         ArrayList<Token> multiTokenList = new ArrayList<>();
         multiTokenList.add(new SeparatorToken(SeparatorType.OPEN));
-        multiTokenList.add(new LiteralToken(42));
+        multiTokenList.add(new LiteralToken(new BigDecimal(42)));
         multiTokenList.add(new OperatorToken(OperatorType.DIVIDE));
-        multiTokenList.add(new LiteralToken(73));
+        multiTokenList.add(new LiteralToken(new BigDecimal(73)));
         multiTokenList.add(new SeparatorToken(SeparatorType.CLOSE));
 
         testTokenizeCase(multiTokenList, "(42/73)");
@@ -88,23 +89,30 @@ public class TestTokenizer {
     void testExponent() {
         testTokenizeCase(new OperatorToken(OperatorType.EXPONENT), "^");
         ArrayList<Token> expectList = new ArrayList<>();
-        expectList.add(new LiteralToken(2));
+        expectList.add(new LiteralToken(new BigDecimal(2)));
         expectList.add(new OperatorToken(OperatorType.EXPONENT));
-        expectList.add(new LiteralToken(2));
+        expectList.add(new LiteralToken(new BigDecimal(2)));
         testTokenizeCase(expectList, "2^2");
     }
 
     @Test
-    void testSignedLiterals(){
+    void testSignedLiterals() {
         //42+(-3+5) = 44
         ArrayList<Token> expected = new ArrayList<>();
-        expected.add(new LiteralToken(42));
+        expected.add(new LiteralToken(new BigDecimal(42)));
         expected.add(new OperatorToken(OperatorType.ADD));
         expected.add(new SeparatorToken(SeparatorType.OPEN));
-        expected.add(new LiteralToken(-3));
+        expected.add(new LiteralToken(new BigDecimal(-3)));
         expected.add(new OperatorToken(OperatorType.ADD));
-        expected.add(new LiteralToken(5));
+        expected.add(new LiteralToken(new BigDecimal(5)));
         expected.add(new SeparatorToken(SeparatorType.CLOSE));
-        testTokenizeCase(expected,"42+(-3+5)");
+        testTokenizeCase(expected, "42+(-3+5)");
+    }
+
+    @Test
+    void testDecimalLiterals() {
+        testTokenizeCase(new LiteralToken(new BigDecimal("1.1")), "1.1");
+        testTokenizeCase(new LiteralToken(new BigDecimal("-521.1")), "-521.1");
+        testTokenizeCase(new LiteralToken(new BigDecimal("-42.1234567891011121314151617181920212223")), "-42.1234567891011121314151617181920212223");
     }
 }

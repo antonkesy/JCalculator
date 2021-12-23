@@ -11,54 +11,57 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 public class JCalculator {
-    public static int calculate(Tokenizer tokenizer) {
+    public static BigDecimal calculate(Tokenizer tokenizer) {
         Parser parser = new Parser(tokenizer);
         Node rootAst = parser.parse();
         return calculateAst(rootAst);
     }
 
-    public static int calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
+    public static BigDecimal calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
         return calculate(new Tokenizer(expressionString));
     }
 
-    public static int calculate(List<Token> tokenList) {
+    public static BigDecimal calculate(List<Token> tokenList) {
         Tokenizer tokenizer = new Tokenizer(tokenList);
         return calculate(tokenizer);
     }
 
-    private static int calculateAst(Node astNode) {
+    private static BigDecimal calculateAst(Node astNode) {
         if (astNode == null) {
-            return 0;
+            return new BigDecimal(0);
         } else if (astNode instanceof FactorNode) {
             return ((ValueToken) astNode.token).getValue();
         } else if (astNode instanceof ExpressionNode) {
             return calculateExpression((ExpressionNode) astNode);
         }
-        return 0;
+        return new BigDecimal(0);
     }
 
-    private static int calculateExpression(ExpressionNode node) {
-        int result = 0;
-        int leftValue = calculateAst(node.leftChild);
-        int rightValue = calculateAst(node.rightChild);
+    private static BigDecimal calculateExpression(ExpressionNode node) {
+        BigDecimal result = new BigDecimal(0);
+        BigDecimal leftValue = calculateAst(node.leftChild);
+        BigDecimal rightValue = calculateAst(node.rightChild);
         switch (((OperatorToken) node.token).operator) {
             case ADD:
-                result = leftValue + rightValue;
+                result = leftValue.add(rightValue);
                 break;
             case SUB:
-                result = leftValue - rightValue;
+                result = leftValue.subtract(rightValue);
                 break;
             case MULTIPLY:
-                result = leftValue * rightValue;
+                result = leftValue.multiply(rightValue);
                 break;
             case DIVIDE:
-                result = leftValue / rightValue;
+                result = leftValue.divide(rightValue);
                 break;
             case EXPONENT:
-                result = (int) Math.pow(leftValue, rightValue);
+                int exponent = rightValue.intValueExact();
+                result = leftValue.pow(exponent);
                 break;
         }
         return result;

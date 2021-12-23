@@ -3,14 +3,16 @@ package com.antonkesy.jcalculator.tokenizer.token.value.constant;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 
+import java.math.BigDecimal;
+
 public enum ConstantType implements TypeRepresentation {
     //TODO use double for values!
-    E("e", (int) Math.E), PI("pi", (int) Math.PI);
+    E("e", new BigDecimal(Math.E)), PI("pi", new BigDecimal(Math.PI));
 
     private final String representation;
-    public final int value;
+    public final BigDecimal value;
 
-    ConstantType(String representation, int value) {
+    ConstantType(String representation, BigDecimal value) {
         this.representation = representation;
         this.value = value;
     }

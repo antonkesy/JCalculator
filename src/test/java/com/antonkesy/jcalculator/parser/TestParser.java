@@ -10,6 +10,7 @@ import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,9 +21,9 @@ public class TestParser {
     void testParserSimple1() {
         //42 + 73
         ArrayList<Token> testToken = new ArrayList<>();
-        testToken.add(new LiteralToken(42));
+        testToken.add(new LiteralToken(new BigDecimal(42)));
         testToken.add(new OperatorToken(OperatorType.ADD));
-        testToken.add(new LiteralToken(73));
+        testToken.add(new LiteralToken(new BigDecimal(73)));
         Tokenizer tokenizer = new Tokenizer(testToken);
 
         try {
@@ -34,8 +35,8 @@ public class TestParser {
             FactorNode right = (FactorNode) root.rightChild;
 
             assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), left, right), root);
-            assertEquals(new FactorNode(new LiteralToken(42)), left);
-            assertEquals(new FactorNode(new LiteralToken(73)), right);
+            assertEquals(new FactorNode(new LiteralToken(new BigDecimal(42))), left);
+            assertEquals(new FactorNode(new LiteralToken(new BigDecimal(73))), right);
         } catch (Exception e) {
             fail();
         }
@@ -45,11 +46,11 @@ public class TestParser {
     void testParserSimple2() {
         //42 + 73 * 101
         ArrayList<Token> testToken = new ArrayList<>();
-        testToken.add(new LiteralToken(42));
+        testToken.add(new LiteralToken(new BigDecimal(42)));
         testToken.add(new OperatorToken(OperatorType.ADD));
-        testToken.add(new LiteralToken(73));
+        testToken.add(new LiteralToken(new BigDecimal(73)));
         testToken.add(new OperatorToken(OperatorType.MULTIPLY));
-        testToken.add(new LiteralToken(101));
+        testToken.add(new LiteralToken(new BigDecimal(101)));
         Tokenizer tokenizer = new Tokenizer(testToken);
 
         try {
@@ -60,11 +61,11 @@ public class TestParser {
             FactorNode left = (FactorNode) root.leftChild; //42
             ExpressionNode right = (ExpressionNode) root.rightChild; // (73 * 101)
 
-            FactorNode node101 = new FactorNode(new LiteralToken(101));
-            FactorNode node73 = new FactorNode(new LiteralToken(73));
+            FactorNode node101 = new FactorNode(new LiteralToken(new BigDecimal(101)));
+            FactorNode node73 = new FactorNode(new LiteralToken(new BigDecimal(73)));
             assertEquals(new ExpressionNode(new OperatorToken(OperatorType.ADD), left, right), root);
             assertEquals(new ExpressionNode(new OperatorToken(OperatorType.MULTIPLY), node73, node101), right);
-            assertEquals(new FactorNode(new LiteralToken(42)), left);
+            assertEquals(new FactorNode(new LiteralToken(new BigDecimal(42))), left);
         } catch (Exception e) {
             e.printStackTrace();
             fail();

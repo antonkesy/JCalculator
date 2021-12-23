@@ -9,6 +9,7 @@ import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -90,8 +91,8 @@ public class Tokenizer {
     }
 
     private Token getLiteralToken(String tokenString) {
-        if (tokenString.matches("([-+])*[0-9]+")) {
-            return new LiteralToken(Integer.parseInt(tokenString));
+        if (tokenString.matches("([-+])?[0-9]+(\\.[0-9]*)?")) {
+            return new LiteralToken(new BigDecimal(tokenString));
         }
         return null;
     }

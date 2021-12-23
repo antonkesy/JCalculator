@@ -2,15 +2,17 @@ package com.antonkesy.jcalculator.tokenizer.token.value.literal;
 
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
-public class LiteralToken implements ValueToken {
-    private final int value;
+import java.math.BigDecimal;
 
-    public LiteralToken(int value) {
+public class LiteralToken implements ValueToken {
+    private final BigDecimal value;
+
+    public LiteralToken(BigDecimal value) {
         this.value = value;
     }
 
     @Override
-    public int getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
@@ -19,11 +21,11 @@ public class LiteralToken implements ValueToken {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LiteralToken that = (LiteralToken) o;
-        return value == that.value;
+        return value.equals(that.value);
     }
 
     @Override
     public String getRepresentation() {
-        return Integer.toString(value);
+        return value.toPlainString();
     }
 }

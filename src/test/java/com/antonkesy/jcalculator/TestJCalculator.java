@@ -4,15 +4,16 @@ import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestJCalculator {
 
-    boolean testString(String input, int expected) {
+    boolean testString(String input, BigDecimal expected) {
         try {
-            int result = JCalculator.calculate(input);
-            if (result == expected) {
+            BigDecimal result = JCalculator.calculate(input);
+            if (result.equals(expected)) {
                 return true;
             } else {
                 fail("expected = " + expected + " actual = " + result);
@@ -31,80 +32,80 @@ public class TestJCalculator {
 
     @Test
     void testSingleFactor() {
-        assertTrue(testString("1", 1));
-        assertTrue(testString("12", 12));
-        assertTrue(testString("42", 42));
-        assertTrue(testString("e", (int) Math.E));
-        assertTrue(testString("pi", (int) Math.PI));
+        assertTrue(testString("1", BigDecimal.ONE));
+        assertTrue(testString("12", new BigDecimal(12)));
+        assertTrue(testString("42", new BigDecimal(42)));
+        assertTrue(testString("e", new BigDecimal(Math.E)));
+        assertTrue(testString("pi", new BigDecimal(Math.PI)));
     }
 
     @Test
     void testAddition() {
-        assertTrue(testString("1+1", 2));
-        assertTrue(testString("10+1", 11));
-        assertTrue(testString("1+2+3+4+5+6", 21));
-        assertTrue(testString("9950+50", 10000));
+        assertTrue(testString("1+1", new BigDecimal(2)));
+        assertTrue(testString("10+1", new BigDecimal(11)));
+        assertTrue(testString("1+2+3+4+5+6", new BigDecimal(21)));
+        assertTrue(testString("9950+50", new BigDecimal(10000)));
     }
 
     @Test
     void testSubtraction() {
-        assertTrue(testString("1-1", 0));
-        assertTrue(testString("10-1", 9));
-        assertTrue(testString("9950-50", 9900));
+        assertTrue(testString("1-1", new BigDecimal(0)));
+        assertTrue(testString("10-1", new BigDecimal(9)));
+        assertTrue(testString("9950-50", new BigDecimal(9900)));
     }
 
     @Test
     void testMultiplication() {
-        assertTrue(testString("1*1", 1));
-        assertTrue(testString("10*1", 10));
-        assertTrue(testString("1*2*3*4*5*6", 720));
-        assertTrue(testString("9950*50", 497500));
+        assertTrue(testString("1*1", new BigDecimal(1)));
+        assertTrue(testString("10*1", new BigDecimal(10)));
+        assertTrue(testString("1*2*3*4*5*6", new BigDecimal(720)));
+        assertTrue(testString("9950*50", new BigDecimal(497500)));
     }
 
     @Test
     void testDivision() {
-        assertTrue(testString("1/1", 1));
-        assertTrue(testString("10/1", 10));
-        assertTrue(testString("9950/50", 199));
+        assertTrue(testString("1/1", new BigDecimal(1)));
+        assertTrue(testString("10/1", new BigDecimal(10)));
+        assertTrue(testString("9950/50", new BigDecimal(199)));
     }
 
     @Test
     void testPEMDAS() {
-        assertTrue(testString("1+1*1", 2));
-        assertTrue(testString("1*1+1", 2));
-        assertTrue(testString("3+7*10", 73));
-        assertTrue(testString("3*7+10", 31));
-        assertTrue(testString("3*(7+10)", 51));
-        assertTrue(testString("3^2*(1+10)", 99));
-        assertTrue(testString("2^6*(8+4)^2", 9216));
+        assertTrue(testString("1+1*1", new BigDecimal(2)));
+        assertTrue(testString("1*1+1", new BigDecimal(2)));
+        assertTrue(testString("3+7*10", new BigDecimal(73)));
+        assertTrue(testString("3*7+10", new BigDecimal(31)));
+        assertTrue(testString("3*(7+10)", new BigDecimal(51)));
+        assertTrue(testString("3^2*(1+10)", new BigDecimal(99)));
+        assertTrue(testString("2^6*(8+4)^2", new BigDecimal(9216)));
     }
 
     @Test
     void testParentheses() {
-        assertTrue(testString("3*(3+1)", 12));
-        assertTrue(testString("3*((3+1)*5)", 60));
-        assertTrue(testString("3*(3)", 9));
-        assertTrue(testString("3()", 3));
+        assertTrue(testString("3*(3+1)", new BigDecimal(12)));
+        assertTrue(testString("3*((3+1)*5)", new BigDecimal(60)));
+        assertTrue(testString("3*(3)", new BigDecimal(9)));
+        assertTrue(testString("3()", new BigDecimal(3)));
     }
 
     @Test
     void testExponent() {
-        assertTrue(testString("2^2", 4));
-        assertTrue(testString("2^2^2", 16));
-        assertTrue(testString("22^2", 484));
-        assertTrue(testString("2^2*2", 8));
-        assertTrue(testString("4*3^2", 36));
-        assertTrue(testString("(4*3)^2", 144));
+        assertTrue(testString("2^2", new BigDecimal(4)));
+        assertTrue(testString("2^2^2", new BigDecimal(16)));
+        assertTrue(testString("22^2", new BigDecimal(484)));
+        assertTrue(testString("2^2*2", new BigDecimal(8)));
+        assertTrue(testString("4*3^2", new BigDecimal(36)));
+        assertTrue(testString("(4*3)^2", new BigDecimal(144)));
     }
 
     @Test
     void testRandom() {
-        //actually −59586.79
-        assertTrue(testString("(250*12+17)-(122*513)+3*(14*221-3*4+4*3+13)/100", -59476));
+        //actually −59576.79
+        assertTrue(testString("(250*12+17)-(122*513)+3*(14*221-3*4+4*3+13)/100", new BigDecimal(-59476)));
     }
 
     @Test
     void testSignedFactor() {
-        assertTrue(testString("-1", -1));
+        assertTrue(testString("-1", new BigDecimal(-1)));
     }
 }
