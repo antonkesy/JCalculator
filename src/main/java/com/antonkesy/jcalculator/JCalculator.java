@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class JCalculator {
+    /**
+     * @param tokenizer if tokenizer already exists
+     */
     public static String calculate(Tokenizer tokenizer) {
         Parser parser = new Parser(tokenizer);
         Node rootAst = parser.parse();
@@ -25,6 +28,9 @@ public class JCalculator {
         return calculate(new Tokenizer(expressionString));
     }
 
+    /**
+     * @param tokenList need's to be correctly build or wrong result gets calculated with no error
+     */
     public static String calculate(List<Token> tokenList) {
         Tokenizer tokenizer = new Tokenizer(tokenList);
         return calculate(tokenizer);
@@ -56,6 +62,7 @@ public class JCalculator {
                 result = leftValue.multiply(rightValue);
                 break;
             case DIVIDE:
+                //just throws error if division is irrational
                 result = leftValue.divide(rightValue);
                 break;
             case EXPONENT:
