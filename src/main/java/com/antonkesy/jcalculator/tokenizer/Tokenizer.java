@@ -131,9 +131,6 @@ public class Tokenizer {
 
     /**
      * signed literals can't be after ')' or other literals
-     *
-     * @param lastToken
-     * @return
      */
     private boolean nextCouldBeSignedLiteralToken(Token lastToken) {
         return !(lastToken instanceof ValueToken || lastToken instanceof SeparatorToken && ((SeparatorToken) lastToken).separatorType == SeparatorType.CLOSE);
