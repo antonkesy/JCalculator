@@ -15,17 +15,17 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class JCalculator {
-    public static BigDecimal calculate(Tokenizer tokenizer) {
+    public static String calculate(Tokenizer tokenizer) {
         Parser parser = new Parser(tokenizer);
         Node rootAst = parser.parse();
-        return calculateAst(rootAst);
+        return calculateAst(rootAst).toPlainString();
     }
 
-    public static BigDecimal calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
+    public static String calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
         return calculate(new Tokenizer(expressionString));
     }
 
-    public static BigDecimal calculate(List<Token> tokenList) {
+    public static String calculate(List<Token> tokenList) {
         Tokenizer tokenizer = new Tokenizer(tokenList);
         return calculate(tokenizer);
     }
