@@ -100,8 +100,11 @@ public class TestJCalculator {
 
     @Test
     void testRandom() {
-        //actually −59576.79
-        assertTrue(testString("(250*12+17)-(122*513)+3*(14*221-3*4+4*3+13)/100", new BigDecimal(-59476)));
+        assertTrue(testString("5^3*4.5/12+1", new BigDecimal("47.875")));
+        //does not support -(...)
+        assertTrue(testString("-1*(5+3)*3/5", new BigDecimal("-4.8")));
+        //TODO
+        assertTrue(testString("(2*12+17)-(-122*513)+3*(14*2-3*-4+4*3+13)", new BigDecimal("62822")));
     }
 
     @Test
