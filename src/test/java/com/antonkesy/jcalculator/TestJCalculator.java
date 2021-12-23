@@ -67,6 +67,10 @@ public class TestJCalculator {
         assertTrue(testString("1/1", "1"));
         assertTrue(testString("10/1", "10"));
         assertTrue(testString("9950/50", "199"));
+        assertTrue(testString("0/1", "0"));
+        assertThrows(ArithmeticException.class, () -> testString("42/0", ""));
+        //does currently not support irrational division results
+        assertThrows(ArithmeticException.class, () -> testString("10/3", "3.3"));
     }
 
     @Test
@@ -86,6 +90,9 @@ public class TestJCalculator {
         assertTrue(testString("3*((3+1)*5)", "60"));
         assertTrue(testString("3*(3)", "9"));
         assertTrue(testString("3()", "3"));
+        assertTrue(testString("(3)+3", "6"));
+        //TODO throw error if parentheses not closed! (currently IndexOutOfBounds)
+        //assertThrows(Exception.class, () -> testString("(3+3", "6"));
     }
 
     @Test
@@ -103,7 +110,10 @@ public class TestJCalculator {
         assertTrue(testString("5^3*4.5/12+1", "47.875"));
         //does not support -(...)
         assertTrue(testString("-1*(5+3)*3/5", "-4.8"));
-        //TODO
+        assertTrue(testString("(2*12+17)", "41"));
+        assertTrue(testString("(-122*513)", "-62586"));
+        assertTrue(testString("(14*2-3*-4+4*3+13)", "65"));
+        assertTrue(testString("(41)-(-62586)+3*(65)", "62822"));
         assertTrue(testString("(2*12+17)-(-122*513)+3*(14*2-3*-4+4*3+13)", "62822"));
     }
 
