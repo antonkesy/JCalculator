@@ -1,6 +1,5 @@
 package com.antonkesy.jcalculator.parser;
 
-import com.antonkesy.jcalculator.parser.IParser;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
