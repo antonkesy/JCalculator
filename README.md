@@ -1,6 +1,6 @@
 # JCalculator
 
-PEMDAS respecting calculator from scratch with a recursive decent operator-precedence parser in Java
+PEMDAS respecting calculator from scratch with a recursive descent operator-precedence parser in Java
 
 ## Disclaimer
 
