@@ -6,7 +6,6 @@ import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 import java.math.BigDecimal;
 
 public enum ConstantType implements TypeRepresentation {
-    //TODO use double for values!
     E("e", new BigDecimal(Math.E)), PI("pi", new BigDecimal(Math.PI));
 
     private final String representation;
