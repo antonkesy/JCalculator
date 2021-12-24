@@ -48,12 +48,9 @@ public class Tokenizer {
             Token currentPossibleToken = getTokenFromString(bufferedToken.toString(), lastAddedToken);
             //if current token is not possible then use last possible or continue trying
             if (currentPossibleToken == null && lastPossibleToken != null) {
-                if (needToAddMultiplyBetweenLiteralAndParentheses(lastAddedToken, lastPossibleToken)) {
-                    token.add(new OperatorToken(OperatorType.MULTIPLY));
-                }
-                lastAddedToken = lastPossibleToken;
+                lastAddedToken = addToken(lastAddedToken, lastPossibleToken);
+                //reset to tokenize buffer
                 lastPossibleToken = null;
-                token.add(lastAddedToken);
                 bufferedToken.setLength(0);
                 --inputIndex;
             } else {
@@ -63,13 +60,19 @@ public class Tokenizer {
         }
         //add rest when input is completely read
         if (lastPossibleToken != null) {
-            if (needToAddMultiplyBetweenLiteralAndParentheses(lastAddedToken, lastPossibleToken)) {
-                token.add(new OperatorToken(OperatorType.MULTIPLY));
-            }
-            token.add(lastPossibleToken);
+            addToken(lastAddedToken, lastPossibleToken);
         } else {
             throw new UnknownTokenException();
         }
+    }
+
+    private Token addToken(Token lastAddedToken, Token lastPossibleToken) {
+        if (needToAddMultiplyBetweenLiteralAndParentheses(lastAddedToken, lastPossibleToken)) {
+            token.add(new OperatorToken(OperatorType.MULTIPLY));
+        }
+        lastAddedToken = lastPossibleToken;
+        token.add(lastAddedToken);
+        return lastAddedToken;
     }
 
     private Token getTokenFromString(String stringToken, Token lastToken) {
