@@ -16,6 +16,16 @@ import java.util.List;
 
 public class JCalculator {
     /**
+     * @param expressionString e.g "1+1","(3+pi*3)-1"
+     * @return result of expressionString
+     * @throws UnknownTokenException if expression string can't be tokenized
+     * @throws MissingTokenException if expression is not complete
+     */
+    public static String calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
+        return calculate(new Tokenizer(expressionString));
+    }
+
+    /**
      * @param tokenizer if tokenizer already exists
      */
     public static String calculate(Tokenizer tokenizer) throws MissingTokenException {
@@ -25,9 +35,6 @@ public class JCalculator {
         return calculateAst(rootAst).toPlainString();
     }
 
-    public static String calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
-        return calculate(new Tokenizer(expressionString));
-    }
 
     /**
      * @param tokenList need's to be correctly build or wrong result gets calculated with no error
