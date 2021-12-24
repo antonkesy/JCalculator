@@ -11,8 +11,8 @@
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>JCalculator</name>
-            <url>https://maven.pkg.github.com/antonkesy/JCalculator</url>
+            <name>jcalculator</name>
+            <url>https://maven.pkg.github.com/antonkesy/jcalculator</url>
         </repository>
     </distributionManagement>
 
