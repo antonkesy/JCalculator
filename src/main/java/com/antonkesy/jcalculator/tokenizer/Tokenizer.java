@@ -8,6 +8,7 @@ import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
+import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 
@@ -74,7 +75,6 @@ public class Tokenizer {
         if ((token = getTokenOfType(stringToken)) != null)
             return token;
         //check signed literal token
-        //TODO check if last was parentheses -> add multiply
         if (nextCouldBeSignedLiteralToken(lastToken) && (token = getSignedLiteralToken(stringToken)) != null)
             return token;
         //check unsigned literal token
@@ -142,12 +142,24 @@ public class Tokenizer {
         return !(lastToken instanceof ValueToken || lastToken instanceof SeparatorToken && ((SeparatorToken) lastToken).separatorType == SeparatorType.CLOSE);
     }
 
-    private boolean needToAddMultiplyBetweenLiteralAndParentheses(Token lastToken, Token nextToken) {
+    private boolean needToAddMultiplyBetweenLiteralAndParentheses(Token last, Token next) {
+        return needMultiplyBetweenLiteralParentheses(last, next) || needMultiplyBetweenLiteralAndConstant(last, next);
+    }
+
+    private boolean needMultiplyBetweenLiteralParentheses(Token last, Token next) {
         return
                 //last token was literal and next is open parentheses
-                (lastToken instanceof ValueToken && nextToken instanceof SeparatorToken && ((SeparatorToken) nextToken).separatorType == SeparatorType.OPEN)
+                (last instanceof ValueToken && next instanceof SeparatorToken && ((SeparatorToken) next).separatorType == SeparatorType.OPEN)
                         //last was closing parentheses and next is literal
-                        || (lastToken instanceof SeparatorToken && ((SeparatorToken) lastToken).separatorType == SeparatorType.CLOSE && nextToken instanceof ValueToken)
+                        || (last instanceof SeparatorToken && ((SeparatorToken) last).separatorType == SeparatorType.CLOSE && next instanceof ValueToken)
+                ;
+    }
+
+    private boolean needMultiplyBetweenLiteralAndConstant(Token last, Token next) {
+        return
+                (last instanceof LiteralToken && next instanceof ConstantToken)
+                        ||
+                        (last instanceof ConstantToken && next instanceof LiteralToken)
                 ;
     }
 }
