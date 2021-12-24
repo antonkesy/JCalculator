@@ -87,7 +87,6 @@ public class Tokenizer {
     private Token getTokenOfType(String tokenString) {
         for (TypeRepresentation[] types : getAllTypes()) {
             for (TypeRepresentation option : types) {
-                //TODO check if last was literal -> add multiply when next is parentheses
                 if (tokenString.matches(Pattern.quote(option.getTypeRepresentation()))) {
                     return option.createToken();
                 }
