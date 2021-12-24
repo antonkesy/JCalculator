@@ -128,4 +128,13 @@ public class TestTokenizer {
         expected.add(new SeparatorToken(SeparatorType.CLOSE));
         testTokenizeCase(expected, "3(-5+4)");
     }
+
+    @Test
+    void testAddMultiplyLiteralConstant() {
+        ArrayList<Token> expected = new ArrayList<>();
+        expected.add(new LiteralToken(new BigDecimal(3)));
+        expected.add(new OperatorToken(OperatorType.MULTIPLY));
+        expected.add(new ConstantToken(ConstantType.PI));
+        testTokenizeCase(expected, "3pi");
+    }
 }

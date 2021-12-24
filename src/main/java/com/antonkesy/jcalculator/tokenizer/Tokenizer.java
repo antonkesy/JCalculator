@@ -63,6 +63,9 @@ public class Tokenizer {
         }
         //add rest when input is completely read
         if (lastPossibleToken != null) {
+            if (needToAddMultiplyBetweenLiteralAndParentheses(lastAddedToken, lastPossibleToken)) {
+                token.add(new OperatorToken(OperatorType.MULTIPLY));
+            }
             token.add(lastPossibleToken);
         } else {
             throw new UnknownTokenException();
@@ -72,14 +75,12 @@ public class Tokenizer {
     private Token getTokenFromString(String stringToken, Token lastToken) {
         Token token;
         //check token of types
-        if ((token = getTokenOfType(stringToken)) != null)
-            return token;
+        if ((token = getTokenOfType(stringToken)) != null) return token;
         //check signed literal token
         if (nextCouldBeSignedLiteralToken(lastToken) && (token = getSignedLiteralToken(stringToken)) != null)
             return token;
         //check unsigned literal token
-        if ((token = getLiteralToken(stringToken)) != null)
-            return token;
+        if ((token = getLiteralToken(stringToken)) != null) return token;
         return null;
     }
 
@@ -151,15 +152,10 @@ public class Tokenizer {
                 //last token was literal and next is open parentheses
                 (last instanceof ValueToken && next instanceof SeparatorToken && ((SeparatorToken) next).separatorType == SeparatorType.OPEN)
                         //last was closing parentheses and next is literal
-                        || (last instanceof SeparatorToken && ((SeparatorToken) last).separatorType == SeparatorType.CLOSE && next instanceof ValueToken)
-                ;
+                        || (last instanceof SeparatorToken && ((SeparatorToken) last).separatorType == SeparatorType.CLOSE && next instanceof ValueToken);
     }
 
     private boolean needMultiplyBetweenLiteralAndConstant(Token last, Token next) {
-        return
-                (last instanceof LiteralToken && next instanceof ConstantToken)
-                        ||
-                        (last instanceof ConstantToken && next instanceof LiteralToken)
-                ;
+        return (last instanceof LiteralToken && next instanceof ConstantToken) || (last instanceof ConstantToken && next instanceof LiteralToken);
     }
 }
