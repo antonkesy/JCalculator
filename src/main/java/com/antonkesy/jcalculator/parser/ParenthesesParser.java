@@ -6,6 +6,7 @@ import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
+import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
 public class ParenthesesParser implements IParser {
 
@@ -32,6 +33,10 @@ public class ParenthesesParser implements IParser {
                     throw new MissingTokenException(new SeparatorToken(SeparatorType.CLOSE));
             }
             tokenizer.nextToken();
+            //if inside of brackets is empty
+            if (inside == null) {
+                throw new MissingTokenException(ValueToken.class.getName());
+            }
             return inside;
         } else if (isSeparatorType(left.token, SeparatorType.CLOSE)) {
             throw new MissingTokenException(new SeparatorToken(SeparatorType.OPEN));
