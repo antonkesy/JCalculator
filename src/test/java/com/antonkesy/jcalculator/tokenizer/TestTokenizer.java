@@ -115,4 +115,17 @@ public class TestTokenizer {
         testTokenizeCase(new LiteralToken(new BigDecimal("-521.1")), "-521.1");
         testTokenizeCase(new LiteralToken(new BigDecimal("-42.1234567891011121314151617181920212223")), "-42.1234567891011121314151617181920212223");
     }
+
+    @Test
+    void testAddMultiplyLiteralParentheses() {
+        ArrayList<Token> expected = new ArrayList<>();
+        expected.add(new LiteralToken(new BigDecimal(3)));
+        expected.add(new OperatorToken(OperatorType.MULTIPLY));
+        expected.add(new SeparatorToken(SeparatorType.OPEN));
+        expected.add(new LiteralToken(new BigDecimal(-5)));
+        expected.add(new OperatorToken(OperatorType.ADD));
+        expected.add(new LiteralToken(new BigDecimal(4)));
+        expected.add(new SeparatorToken(SeparatorType.CLOSE));
+        testTokenizeCase(expected, "3(-5+4)");
+    }
 }

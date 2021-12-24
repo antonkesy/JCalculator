@@ -3,6 +3,7 @@ package com.antonkesy.jcalculator.tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
+import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
@@ -46,6 +47,9 @@ public class Tokenizer {
             Token currentPossibleToken = getTokenFromString(bufferedToken.toString(), lastAddedToken);
             //if current token is not possible then use last possible or continue trying
             if (currentPossibleToken == null && lastPossibleToken != null) {
+                if (needToAddMultiplyBetweenLiteralAndParentheses(lastAddedToken, lastPossibleToken)) {
+                    token.add(new OperatorToken(OperatorType.MULTIPLY));
+                }
                 lastAddedToken = lastPossibleToken;
                 lastPossibleToken = null;
                 token.add(lastAddedToken);
@@ -70,6 +74,7 @@ public class Tokenizer {
         if ((token = getTokenOfType(stringToken)) != null)
             return token;
         //check signed literal token
+        //TODO check if last was parentheses -> add multiply
         if (nextCouldBeSignedLiteralToken(lastToken) && (token = getSignedLiteralToken(stringToken)) != null)
             return token;
         //check unsigned literal token
@@ -81,6 +86,7 @@ public class Tokenizer {
     private Token getTokenOfType(String tokenString) {
         for (TypeRepresentation[] types : getAllTypes()) {
             for (TypeRepresentation option : types) {
+                //TODO check if last was literal -> add multiply when next is parentheses
                 if (tokenString.matches(Pattern.quote(option.getTypeRepresentation()))) {
                     return option.createToken();
                 }
@@ -134,5 +140,14 @@ public class Tokenizer {
      */
     private boolean nextCouldBeSignedLiteralToken(Token lastToken) {
         return !(lastToken instanceof ValueToken || lastToken instanceof SeparatorToken && ((SeparatorToken) lastToken).separatorType == SeparatorType.CLOSE);
+    }
+
+    private boolean needToAddMultiplyBetweenLiteralAndParentheses(Token lastToken, Token nextToken) {
+        return
+                //last token was literal and next is open parentheses
+                (lastToken instanceof ValueToken && nextToken instanceof SeparatorToken && ((SeparatorToken) nextToken).separatorType == SeparatorType.OPEN)
+                        //last was closing parentheses and next is literal
+                        || (lastToken instanceof SeparatorToken && ((SeparatorToken) lastToken).separatorType == SeparatorType.CLOSE && nextToken instanceof ValueToken)
+                ;
     }
 }
