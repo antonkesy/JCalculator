@@ -86,13 +86,15 @@ public class TestJCalculator {
 
     @Test
     void testParentheses() {
+        assertThrows(MissingTokenException.class, () -> JCalculator.calculate("3+)3"));
         assertTrue(testString("3*(3+1)", "12"));
         assertTrue(testString("3*((3+1)*5)", "60"));
         assertTrue(testString("3*(3)", "9"));
         assertTrue(testString("3()", "3"));
         assertTrue(testString("(3)+3", "6"));
-        //TODO throw error if parentheses not closed! (currently IndexOutOfBounds)
-        //assertThrows(Exception.class, () -> testString("(3+3", "6"));
+        assertThrows(MissingTokenException.class, () -> JCalculator.calculate("(3+3"));
+        assertThrows(MissingTokenException.class, () -> JCalculator.calculate("3+)3"));
+        assertThrows(MissingTokenException.class, () -> JCalculator.calculate("3+3)+3"));
     }
 
     @Test

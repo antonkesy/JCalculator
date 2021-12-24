@@ -1,6 +1,7 @@
 package com.antonkesy.jcalculator.parser;
 
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
+import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 
@@ -11,7 +12,7 @@ public final class Parser implements IParser {
         this.tokenizer = tokenizer;
     }
 
-    public Node parse() {
+    public Node parse() throws MissingTokenException {
         IParser parenthesesParser = new ParenthesesParser(this, new LiteralParser(tokenizer), tokenizer);
         IParser exponentParser = new OperatorParser(parenthesesParser, tokenizer, new OperatorType[]{OperatorType.EXPONENT});
         OperatorParser multiParser =

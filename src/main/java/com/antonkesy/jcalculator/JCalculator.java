@@ -18,9 +18,10 @@ public class JCalculator {
     /**
      * @param tokenizer if tokenizer already exists
      */
-    public static String calculate(Tokenizer tokenizer) {
+    public static String calculate(Tokenizer tokenizer) throws MissingTokenException {
         Parser parser = new Parser(tokenizer);
-        Node rootAst = parser.parse();
+        Node rootAst;
+        rootAst = parser.parse();
         return calculateAst(rootAst).toPlainString();
     }
 
@@ -31,7 +32,7 @@ public class JCalculator {
     /**
      * @param tokenList need's to be correctly build or wrong result gets calculated with no error
      */
-    public static String calculate(List<Token> tokenList) {
+    public static String calculate(List<Token> tokenList) throws MissingTokenException {
         Tokenizer tokenizer = new Tokenizer(tokenList);
         return calculate(tokenizer);
     }

@@ -1,6 +1,7 @@
 package com.antonkesy.jcalculator.parser;
 
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
+import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
@@ -19,16 +20,23 @@ public class ParenthesesParser implements IParser {
     }
 
     @Override
-    public Node parse() {
+    public Node parse() throws MissingTokenException {
         Node left = nextHigher.parse();
-        if (left != null && isSeparatorType(left.token, SeparatorType.OPEN)) {
+        if (left == null) return null;
+        if (isSeparatorType(left.token, SeparatorType.OPEN)) {
             Node inside = null;
             while (!isSeparatorType(tokenizer.peek(), SeparatorType.CLOSE)) {
                 inside = rootParser.parse();
+                //if parsing failed -> close separator token probably not available
+                if (inside == null || inside.token == null)
+                    throw new MissingTokenException(new SeparatorToken(SeparatorType.CLOSE));
             }
             tokenizer.nextToken();
             return inside;
+        } else if (isSeparatorType(left.token, SeparatorType.CLOSE)) {
+            throw new MissingTokenException(new SeparatorToken(SeparatorType.OPEN));
         }
+
         return left;
     }
 

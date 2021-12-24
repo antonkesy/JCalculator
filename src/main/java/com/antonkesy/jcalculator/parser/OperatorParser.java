@@ -2,6 +2,7 @@ package com.antonkesy.jcalculator.parser;
 
 import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.Node;
+import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import com.antonkesy.jcalculator.tokenizer.Tokenizer;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
@@ -19,7 +20,7 @@ public class OperatorParser implements IParser {
     }
 
     @Override
-    public Node parse() {
+    public Node parse() throws MissingTokenException {
         Node left = nextHigher.parse();
         while (isSameTokenType(tokenizer.peek())) {
             left = new ExpressionNode(tokenizer.nextToken(), left, nextHigher.parse());
