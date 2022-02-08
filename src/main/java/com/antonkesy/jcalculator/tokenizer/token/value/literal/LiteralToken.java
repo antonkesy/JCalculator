@@ -1,18 +1,17 @@
 package com.antonkesy.jcalculator.tokenizer.token.value.literal;
 
+import com.antonkesy.jcalculator.number.INumber;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
-import java.math.BigDecimal;
-
 public class LiteralToken implements ValueToken {
-    private final BigDecimal value;
+    private final INumber value;
 
-    public LiteralToken(BigDecimal value) {
+    public LiteralToken(INumber value) {
         this.value = value;
     }
 
     @Override
-    public BigDecimal getValue() {
+    public INumber getValue() {
         return value;
     }
 

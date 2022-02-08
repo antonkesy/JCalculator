@@ -1,17 +1,16 @@
 package com.antonkesy.jcalculator.tokenizer.token.value.constant;
 
+import com.antonkesy.jcalculator.number.INumber;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 
-import java.math.BigDecimal;
+import java.util.Objects;
 
-public enum ConstantType implements TypeRepresentation {
-    E("e", new BigDecimal(Math.E)), PI("pi", new BigDecimal(Math.PI));
-
+public class ConstantType implements TypeRepresentation {
     private final String representation;
-    public final BigDecimal value;
+    public final INumber value;
 
-    ConstantType(String representation, BigDecimal value) {
+    public ConstantType(String representation, INumber value) {
         this.representation = representation;
         this.value = value;
     }
@@ -25,4 +24,13 @@ public enum ConstantType implements TypeRepresentation {
     public Token createToken() {
         return new ConstantToken(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConstantType that = (ConstantType) o;
+        return Objects.equals(representation, that.representation) && Objects.equals(value, that.value);
+    }
+
 }

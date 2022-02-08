@@ -1,5 +1,6 @@
 package com.antonkesy.jcalculator;
 
+import com.antonkesy.jcalculator.number.bigdecimal.BigDecimalFactory;
 import com.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import org.junit.jupiter.api.Test;
 
@@ -9,10 +10,11 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestJCalculator {
+    private final JCalculator TESTCAL = new JCalculator(new BigDecimalFactory());
 
     boolean testString(String input, String expected) {
         try {
-            String result = JCalculator.calculate(input);
+            String result = TESTCAL.calculate(input);
             if (result.equals(expected)) {
                 return true;
             } else {
@@ -27,7 +29,7 @@ public class TestJCalculator {
 
     @Test
     void testEmptyString() {
-        assertThrows(Exception.class, () -> JCalculator.calculate(""));
+        assertThrows(Exception.class, () -> TESTCAL.calculate(""));
     }
 
     @Test
@@ -69,7 +71,7 @@ public class TestJCalculator {
         assertTrue(testString("9950/50", "199"));
         assertTrue(testString("0/1", "0"));
         assertThrows(ArithmeticException.class, () -> testString("42/0", ""));
-        //does currently not support irrational division results
+        //irrational division depends on INumber
         assertThrows(ArithmeticException.class, () -> testString("10/3", "3.3"));
     }
 
@@ -90,12 +92,12 @@ public class TestJCalculator {
         assertTrue(testString("3*((3+1)*5)", "60"));
         assertTrue(testString("3*(3)", "9"));
         assertTrue(testString("(3)+3", "6"));
-        assertThrows(MissingTokenException.class, () -> JCalculator.calculate("(3+3"));
-        assertThrows(MissingTokenException.class, () -> JCalculator.calculate("3+)3"));
+        assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("(3+3"));
+        assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+)3"));
         //TODO catch too many closing parentheses
-        //assertThrows(MissingTokenException.class, () -> JCalculator.calculate("3+3)+3"));
-        assertThrows(MissingTokenException.class, () -> JCalculator.calculate("3+)3"));
-        assertThrows(MissingTokenException.class, () -> JCalculator.calculate("3()"));
+        //assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+3)+3"));
+        assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+)3"));
+        assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3()"));
     }
 
     @Test
