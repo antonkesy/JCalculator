@@ -95,7 +95,7 @@ public class TestJCalculator {
         assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("(3+3"));
         assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+)3"));
         //TODO catch too many closing parentheses
-        //assertThrows(MissingTokenException.class, () -> JCalculator.calculate("3+3)+3"));
+        //assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+3)+3"));
         assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+)3"));
         assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3()"));
     }
