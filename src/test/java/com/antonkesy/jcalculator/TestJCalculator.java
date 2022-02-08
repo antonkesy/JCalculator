@@ -71,7 +71,7 @@ public class TestJCalculator {
         assertTrue(testString("9950/50", "199"));
         assertTrue(testString("0/1", "0"));
         assertThrows(ArithmeticException.class, () -> testString("42/0", ""));
-        //does currently not support irrational division results
+        //irrational division depends on INumber
         assertThrows(ArithmeticException.class, () -> testString("10/3", "3.3"));
     }
 
