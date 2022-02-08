@@ -1,8 +1,7 @@
 package com.antonkesy.jcalculator;
 
-import com.antonkesy.jcalculator.number.INumberFactory;
-import com.antonkesy.jcalculator.number.bigdecimal.BigDecimalFactory;
 import com.antonkesy.jcalculator.number.INumber;
+import com.antonkesy.jcalculator.number.INumberFactory;
 import com.antonkesy.jcalculator.parser.Parser;
 import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;

@@ -1,5 +1,6 @@
 package com.antonkesy.jcalculator.tokenizer;
 
+import com.antonkesy.jcalculator.number.INumberFactory;
 import com.antonkesy.jcalculator.number.bigdecimal.BigDecimalFactory;
 import com.antonkesy.jcalculator.number.bigdecimal.BigDecimalNumber;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTokenizer {
 
-    private final BigDecimalFactory numberFactory = new BigDecimalFactory();
+    private final INumberFactory numberFactory = new BigDecimalFactory();
     private final ConstantToken PI = new ConstantToken(new ConstantType("pi", new BigDecimalNumber(Math.PI)));
 
     @Test

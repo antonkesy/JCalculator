@@ -1,7 +1,6 @@
 package com.antonkesy.jcalculator.tokenizer;
 
 import com.antonkesy.jcalculator.number.INumberFactory;
-import com.antonkesy.jcalculator.number.bigdecimal.BigDecimalFactory;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
