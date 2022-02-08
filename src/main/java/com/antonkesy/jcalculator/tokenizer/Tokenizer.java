@@ -1,8 +1,9 @@
 package com.antonkesy.jcalculator.tokenizer;
 
+import com.antonkesy.jcalculator.number.bigdecimal.BigDecimalFactory;
+import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
-import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
 import com.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
@@ -12,7 +13,6 @@ import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
 import com.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
 
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -20,13 +20,16 @@ import java.util.regex.Pattern;
 public class Tokenizer {
     private int tokenIndex = -1;
     private List<Token> token;
+    private final BigDecimalFactory numberFactory;
 
-    public Tokenizer(String input) throws UnknownTokenException {
+    public Tokenizer(String input, BigDecimalFactory numberFactory) throws UnknownTokenException {
+        this.numberFactory = numberFactory;
         tokenize(input);
     }
 
-    public Tokenizer(List<Token> alreadyTokenized) {
+    public Tokenizer(List<Token> alreadyTokenized, BigDecimalFactory numberFactory) {
         this.token = alreadyTokenized;
+        this.numberFactory = numberFactory;
     }
 
     public List<Token> getToken() {
@@ -100,19 +103,23 @@ public class Tokenizer {
 
 
     private TypeRepresentation[][] getAllTypes() {
-        return new TypeRepresentation[][]{OperatorType.values(), ConstantType.values(), SeparatorType.values()};
+        TypeRepresentation[][] representations = new TypeRepresentation[3][0];
+        representations[0] = OperatorType.values();
+        representations[1] = numberFactory.getConstants().toArray(new ConstantType[0]);
+        representations[2] = SeparatorType.values();
+        return representations;
     }
 
     private Token getLiteralToken(String tokenString) {
         if (tokenString.matches("[0-9]+(\\.[0-9]*)?")) {
-            return new LiteralToken(new BigDecimal(tokenString));
+            return new LiteralToken(numberFactory.getNumber(tokenString));
         }
         return null;
     }
 
     private Token getSignedLiteralToken(String tokenString) {
         if (tokenString.matches("([-+])?[0-9]+(\\.[0-9]*)?")) {
-            return new LiteralToken(new BigDecimal(tokenString));
+            return new LiteralToken(numberFactory.getNumber(tokenString));
         }
         return null;
     }
