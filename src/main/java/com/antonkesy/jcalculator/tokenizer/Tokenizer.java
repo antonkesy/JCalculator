@@ -1,5 +1,6 @@
 package com.antonkesy.jcalculator.tokenizer;
 
+import com.antonkesy.jcalculator.number.INumberFactory;
 import com.antonkesy.jcalculator.number.bigdecimal.BigDecimalFactory;
 import com.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import com.antonkesy.jcalculator.tokenizer.token.Token;
@@ -20,14 +21,14 @@ import java.util.regex.Pattern;
 public class Tokenizer {
     private int tokenIndex = -1;
     private List<Token> token;
-    private final BigDecimalFactory numberFactory;
+    private final INumberFactory numberFactory;
 
-    public Tokenizer(String input, BigDecimalFactory numberFactory) throws UnknownTokenException {
+    public Tokenizer(String input, INumberFactory numberFactory) throws UnknownTokenException {
         this.numberFactory = numberFactory;
         tokenize(input);
     }
 
-    public Tokenizer(List<Token> alreadyTokenized, BigDecimalFactory numberFactory) {
+    public Tokenizer(List<Token> alreadyTokenized, INumberFactory numberFactory) {
         this.token = alreadyTokenized;
         this.numberFactory = numberFactory;
     }

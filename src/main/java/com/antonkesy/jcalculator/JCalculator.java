@@ -1,5 +1,8 @@
 package com.antonkesy.jcalculator;
 
+import com.antonkesy.jcalculator.number.INumberFactory;
+import com.antonkesy.jcalculator.number.bigdecimal.BigDecimalFactory;
+import com.antonkesy.jcalculator.number.INumber;
 import com.antonkesy.jcalculator.parser.Parser;
 import com.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import com.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
@@ -11,24 +14,29 @@ import com.antonkesy.jcalculator.tokenizer.token.Token;
 import com.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
 import com.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class JCalculator {
+    private final INumberFactory numberFactory;
+
+    public JCalculator(INumberFactory numberFactory) {
+        this.numberFactory = numberFactory;
+    }
+
     /**
      * @param expressionString e.g "1+1","(3+pi*3)-1"
      * @return result of expressionString
      * @throws UnknownTokenException if expression string can't be tokenized
      * @throws MissingTokenException if expression is not complete
      */
-    public static String calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
-        return calculate(new Tokenizer(expressionString));
+    public String calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
+        return calculate(new Tokenizer(expressionString, numberFactory));
     }
 
     /**
      * @param tokenizer if tokenizer already exists
      */
-    public static String calculate(Tokenizer tokenizer) throws MissingTokenException {
+    public String calculate(Tokenizer tokenizer) throws MissingTokenException {
         Parser parser = new Parser(tokenizer);
         Node rootAst;
         rootAst = parser.parse();
@@ -39,26 +47,26 @@ public class JCalculator {
     /**
      * @param tokenList need's to be correctly build or wrong result gets calculated with no error
      */
-    public static String calculate(List<Token> tokenList) throws MissingTokenException {
-        Tokenizer tokenizer = new Tokenizer(tokenList);
+    public String calculate(List<Token> tokenList) throws MissingTokenException {
+        Tokenizer tokenizer = new Tokenizer(tokenList, numberFactory);
         return calculate(tokenizer);
     }
 
-    private static BigDecimal calculateAst(Node astNode) {
+    private INumber calculateAst(Node astNode) {
         if (astNode == null) {
-            return new BigDecimal(0);
+            return numberFactory.getNumber("0");
         } else if (astNode instanceof FactorNode) {
             return ((ValueToken) astNode.token).getValue();
         } else if (astNode instanceof ExpressionNode) {
             return calculateExpression((ExpressionNode) astNode);
         }
-        return new BigDecimal(0);
+        return numberFactory.getNumber("0");
     }
 
-    private static BigDecimal calculateExpression(ExpressionNode node) {
-        BigDecimal result = new BigDecimal(0);
-        BigDecimal leftValue = calculateAst(node.leftChild);
-        BigDecimal rightValue = calculateAst(node.rightChild);
+    private INumber calculateExpression(ExpressionNode node) {
+        INumber result = numberFactory.getNumber("0");
+        INumber leftValue = calculateAst(node.leftChild);
+        INumber rightValue = calculateAst(node.rightChild);
         switch (((OperatorToken) node.token).operator) {
             case ADD:
                 result = leftValue.add(rightValue);
@@ -70,12 +78,10 @@ public class JCalculator {
                 result = leftValue.multiply(rightValue);
                 break;
             case DIVIDE:
-                //just throws error if division is irrational
                 result = leftValue.divide(rightValue);
                 break;
             case EXPONENT:
-                int exponent = rightValue.intValueExact();
-                result = leftValue.pow(exponent);
+                result = leftValue.pow(rightValue);
                 break;
         }
         return result;
