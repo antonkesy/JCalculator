@@ -1,4 +1,4 @@
-# JCalculator
+# jcalculator
 
 PEMDAS respecting calculator from scratch with a recursive descent operator-precedence parser in Java
 
