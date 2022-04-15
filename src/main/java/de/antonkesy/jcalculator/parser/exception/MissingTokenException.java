@@ -1,10 +1,10 @@
 package de.antonkesy.jcalculator.parser.exception;
 
-import de.antonkesy.jcalculator.tokenizer.token.Token;
+import de.antonkesy.jcalculator.tokenizer.token.IToken;
 
 public class MissingTokenException extends Exception {
-    public MissingTokenException(Token tokenExpected) {
-        super(tokenExpected.getRepresentation() + " not found");
+    public MissingTokenException(IToken tokenExpected) {
+        super(tokenExpected.getTypeRepresentation() + " not found");
     }
 
     public MissingTokenException(String tokenName) {

@@ -2,16 +2,10 @@ package de.antonkesy.jcalculator.tokenizer;
 
 import de.antonkesy.jcalculator.number.INumberFactory;
 import de.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
-import de.antonkesy.jcalculator.tokenizer.token.Token;
+import de.antonkesy.jcalculator.tokenizer.token.IToken;
 import de.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
-import de.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
-import de.antonkesy.jcalculator.tokenizer.token.operator.OperatorType;
-import de.antonkesy.jcalculator.tokenizer.token.separator.SeparatorToken;
-import de.antonkesy.jcalculator.tokenizer.token.separator.SeparatorType;
-import de.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
-import de.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantToken;
-import de.antonkesy.jcalculator.tokenizer.token.value.constant.ConstantType;
-import de.antonkesy.jcalculator.tokenizer.token.value.literal.LiteralToken;
+import de.antonkesy.jcalculator.tokenizer.token.ValueToken;
+import de.antonkesy.jcalculator.tokenizer.token.map.ITokenMap;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,20 +13,23 @@ import java.util.regex.Pattern;
 
 public class Tokenizer {
     private int tokenIndex = -1;
-    private List<Token> token;
+    private List<IToken> token;
     private final INumberFactory numberFactory;
+    private final ITokenMap tokenMap;
 
-    public Tokenizer(String input, INumberFactory numberFactory) throws UnknownTokenException {
+    public Tokenizer(String input, INumberFactory numberFactory, ITokenMap tokenMap) throws UnknownTokenException {
         this.numberFactory = numberFactory;
+        this.tokenMap = tokenMap;
         tokenize(input);
     }
 
-    public Tokenizer(List<Token> alreadyTokenized, INumberFactory numberFactory) {
+    public Tokenizer(List<IToken> alreadyTokenized, INumberFactory numberFactory, ITokenMap tokenMap) {
         this.token = alreadyTokenized;
         this.numberFactory = numberFactory;
+        this.tokenMap = tokenMap;
     }
 
-    public List<Token> getToken() {
+    public List<IToken> getToken() {
         return this.token;
     }
 
@@ -43,12 +40,12 @@ public class Tokenizer {
 
         token = new LinkedList<>();
         StringBuilder bufferedToken = new StringBuilder();
-        Token lastAddedToken = null;
-        Token lastPossibleToken = null;
+        IToken lastAddedToken = null;
+        IToken lastPossibleToken = null;
         int inputIndex = 0;
         while (inputIndex < input.length()) {
             bufferedToken.append(input.charAt(inputIndex));
-            Token currentPossibleToken = getTokenFromString(bufferedToken.toString(), lastAddedToken);
+            IToken currentPossibleToken = getTokenFromString(bufferedToken.toString(), lastAddedToken);
             //if current token is not possible then use last possible or continue trying
             if (currentPossibleToken == null && lastPossibleToken != null) {
                 lastAddedToken = addToken(lastAddedToken, lastPossibleToken);
@@ -69,17 +66,19 @@ public class Tokenizer {
         }
     }
 
-    private Token addToken(Token lastAddedToken, Token lastPossibleToken) {
+    private IToken addToken(IToken lastAddedToken, IToken lastPossibleToken) {
+        /*
         if (needToAddMultiplyBetweenLiteralAndParentheses(lastAddedToken, lastPossibleToken)) {
-            token.add(new OperatorToken(OperatorType.MULTIPLY));
+            token.add(new Token(OperatorType.MULTIPLY));
         }
+        */
         lastAddedToken = lastPossibleToken;
         token.add(lastAddedToken);
         return lastAddedToken;
     }
 
-    private Token getTokenFromString(String stringToken, Token lastToken) {
-        Token token;
+    private IToken getTokenFromString(String stringToken, IToken lastToken) {
+        IToken token;
         //check token of types
         if ((token = getTokenOfType(stringToken)) != null) return token;
         //check signed literal token
@@ -90,53 +89,43 @@ public class Tokenizer {
         return null;
     }
 
-    private Token getTokenOfType(String tokenString) {
-        for (TypeRepresentation[] types : getAllTypes()) {
-            for (TypeRepresentation option : types) {
-                if (tokenString.matches(Pattern.quote(option.getTypeRepresentation()))) {
-                    return option.createToken();
-                }
+    private IToken getTokenOfType(String tokenString) {
+        for (IToken type : tokenMap.getAll()) {
+            if (tokenString.matches(Pattern.quote(type.getTypeRepresentation()))) {
+                return type;
             }
         }
         return null;
     }
 
 
-    private TypeRepresentation[][] getAllTypes() {
-        TypeRepresentation[][] representations = new TypeRepresentation[3][0];
-        representations[0] = OperatorType.values();
-        representations[1] = numberFactory.getConstants().toArray(new ConstantType[0]);
-        representations[2] = SeparatorType.values();
-        return representations;
-    }
-
-    private Token getLiteralToken(String tokenString) {
-        if (tokenString.matches("[0-9]+(\\.[0-9]*)?")) {
-            return new LiteralToken(numberFactory.getNumber(tokenString));
+    private IToken getLiteralToken(String tokenString) {
+        if (tokenString.matches("\\d+(\\.\\d*)?")) {
+            return new ValueToken(numberFactory.getNumber(tokenString));
         }
         return null;
     }
 
-    private Token getSignedLiteralToken(String tokenString) {
-        if (tokenString.matches("([-+])?[0-9]+(\\.[0-9]*)?")) {
-            return new LiteralToken(numberFactory.getNumber(tokenString));
+    private IToken getSignedLiteralToken(String tokenString) {
+        if (tokenString.matches("([-+])?\\d+(\\.\\d*)?")) {
+            return new ValueToken(numberFactory.getNumber(tokenString));
         }
         return null;
     }
 
-    public Token peek() {
+    public IToken peek() {
         if (tokenIndex + 1 < token.size()) {
             return token.get(tokenIndex + 1);
         }
         return null;
     }
 
-    public Token nextToken() {
+    public IToken nextToken() {
         ++tokenIndex;
         return currentToken();
     }
 
-    public Token currentToken() {
+    public IToken currentToken() {
         if (isTokenIndexInBound()) return token.get(tokenIndex);
         else return null;
     }
@@ -145,18 +134,22 @@ public class Tokenizer {
         return tokenIndex < token.size();
     }
 
-    /**
+    /*
      * signed literals can't be after ')' or other literals
      */
-    private boolean nextCouldBeSignedLiteralToken(Token lastToken) {
-        return !(lastToken instanceof ValueToken || lastToken instanceof SeparatorToken && ((SeparatorToken) lastToken).separatorType == SeparatorType.CLOSE);
+    private boolean nextCouldBeSignedLiteralToken(IToken lastToken) {
+        //return !(lastToken instanceof ValueToken || lastToken instanceof SeparatorToken && ((SeparatorToken) lastToken).separatorType == SeparatorType.CLOSE);
+        return !(lastToken instanceof ValueToken);
     }
 
-    private boolean needToAddMultiplyBetweenLiteralAndParentheses(Token last, Token next) {
+    /*
+    private boolean needToAddMultiplyBetweenLiteralAndParentheses(IToken last, IToken next) {
         return needMultiplyBetweenLiteralParentheses(last, next) || needMultiplyBetweenLiteralAndConstant(last, next);
     }
+    */
 
-    private boolean needMultiplyBetweenLiteralParentheses(Token last, Token next) {
+    /*
+    private boolean needMultiplyBetweenLiteralParentheses(IToken last, IToken next) {
         return
                 //last token was literal and next is open parentheses
                 (last instanceof ValueToken && next instanceof SeparatorToken && ((SeparatorToken) next).separatorType == SeparatorType.OPEN)
@@ -164,7 +157,9 @@ public class Tokenizer {
                         || (last instanceof SeparatorToken && ((SeparatorToken) last).separatorType == SeparatorType.CLOSE && next instanceof ValueToken);
     }
 
-    private boolean needMultiplyBetweenLiteralAndConstant(Token last, Token next) {
+    private boolean needMultiplyBetweenLiteralAndConstant(IToken last, IToken next) {
         return (last instanceof LiteralToken && next instanceof ConstantToken) || (last instanceof ConstantToken && next instanceof LiteralToken);
     }
+
+     */
 }

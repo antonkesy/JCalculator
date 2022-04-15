@@ -1,6 +1,6 @@
 package de.antonkesy.jcalculator.parser.ast_nodes;
 
-import de.antonkesy.jcalculator.tokenizer.token.Token;
+import de.antonkesy.jcalculator.tokenizer.token.IToken;
 
 import java.util.Objects;
 
@@ -8,7 +8,7 @@ public class ExpressionNode extends Node {
 
     public final Node leftChild, rightChild;
 
-    public ExpressionNode(Token token, Node leftChild, Node rightChild) {
+    public ExpressionNode(IToken token, Node leftChild, Node rightChild) {
         super(token);
         this.leftChild = leftChild;
         this.rightChild = rightChild;

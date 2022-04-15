@@ -1,10 +1,10 @@
 package de.antonkesy.jcalculator.parser.ast_nodes;
 
-import de.antonkesy.jcalculator.tokenizer.token.Token;
+import de.antonkesy.jcalculator.tokenizer.token.IToken;
 
 public class FactorNode extends Node {
 
-    public FactorNode(Token token) {
+    public FactorNode(IToken token) {
         super(token);
     }
 
@@ -15,6 +15,6 @@ public class FactorNode extends Node {
 
     @Override
     String getRepresentation() {
-        return token.getRepresentation();
+        return token.getTypeRepresentation();
     }
 }

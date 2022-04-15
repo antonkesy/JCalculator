@@ -1,13 +1,13 @@
 package de.antonkesy.jcalculator.parser.ast_nodes;
 
-import de.antonkesy.jcalculator.tokenizer.token.Token;
+import de.antonkesy.jcalculator.tokenizer.token.IToken;
 
 import java.util.Objects;
 
 public abstract class Node {
-    public final Token token;
+    public final IToken token;
 
-    public Node(Token token) {
+    public Node(IToken token) {
         this.token = token;
     }
 

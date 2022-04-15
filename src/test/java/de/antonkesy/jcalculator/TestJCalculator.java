@@ -1,6 +1,7 @@
 package de.antonkesy.jcalculator;
 
-import de.antonkesy.jcalculator.number.bigdecimal.BigDecimalFactory;
+import de.antonkesy.jcalculator.imp.bigdecimal.BigDecimalFactory;
+import de.antonkesy.jcalculator.imp.bigdecimal.DefaultTokenMap;
 import de.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestJCalculator {
-    private final JCalculator TESTCAL = new JCalculator(new BigDecimalFactory());
+    private final JCalculator TESTCAL = new JCalculator(new BigDecimalFactory(), new DefaultTokenMap());
 
     boolean testString(String input, String expected) {
         try {
@@ -88,6 +89,8 @@ public class TestJCalculator {
 
     @Test
     void testParentheses() {
+        assertTrue(testString("(3)", "3"));
+        assertTrue(testString("(3+1)", "4"));
         assertTrue(testString("3*(3+1)", "12"));
         assertTrue(testString("3*((3+1)*5)", "60"));
         assertTrue(testString("3*(3)", "9"));

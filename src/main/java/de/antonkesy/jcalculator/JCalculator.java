@@ -4,22 +4,22 @@ import de.antonkesy.jcalculator.number.INumber;
 import de.antonkesy.jcalculator.number.INumberFactory;
 import de.antonkesy.jcalculator.parser.Parser;
 import de.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
-import de.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
 import de.antonkesy.jcalculator.parser.ast_nodes.Node;
 import de.antonkesy.jcalculator.parser.exception.MissingTokenException;
 import de.antonkesy.jcalculator.tokenizer.Tokenizer;
 import de.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
-import de.antonkesy.jcalculator.tokenizer.token.Token;
-import de.antonkesy.jcalculator.tokenizer.token.operator.OperatorToken;
-import de.antonkesy.jcalculator.tokenizer.token.value.ValueToken;
+import de.antonkesy.jcalculator.tokenizer.token.*;
+import de.antonkesy.jcalculator.tokenizer.token.map.ITokenMap;
 
 import java.util.List;
 
 public class JCalculator {
     private final INumberFactory numberFactory;
+    private final ITokenMap tokenMap;
 
-    public JCalculator(INumberFactory numberFactory) {
+    public JCalculator(INumberFactory numberFactory, ITokenMap tokenMap) {
         this.numberFactory = numberFactory;
+        this.tokenMap = tokenMap;
     }
 
     /**
@@ -29,14 +29,14 @@ public class JCalculator {
      * @throws MissingTokenException if expression is not complete
      */
     public String calculate(String expressionString) throws UnknownTokenException, MissingTokenException {
-        return calculate(new Tokenizer(expressionString, numberFactory));
+        return calculate(new Tokenizer(expressionString, numberFactory, tokenMap));
     }
 
     /**
      * @param tokenizer if tokenizer already exists
      */
     public String calculate(Tokenizer tokenizer) throws MissingTokenException {
-        Parser parser = new Parser(tokenizer);
+        Parser parser = new Parser(tokenizer, tokenMap);
         Node rootAst;
         rootAst = parser.parse();
         return calculateAst(rootAst).toPlainString();
@@ -46,44 +46,25 @@ public class JCalculator {
     /**
      * @param tokenList need's to be correctly build or wrong result gets calculated with no error
      */
-    public String calculate(List<Token> tokenList) throws MissingTokenException {
-        Tokenizer tokenizer = new Tokenizer(tokenList, numberFactory);
+    public String calculate(List<IToken> tokenList) throws MissingTokenException {
+        Tokenizer tokenizer = new Tokenizer(tokenList, numberFactory, tokenMap);
         return calculate(tokenizer);
     }
 
     private INumber calculateAst(Node astNode) {
+        //TODO remove separator from ast
         if (astNode == null) {
             return numberFactory.getNumber("0");
-        } else if (astNode instanceof FactorNode) {
-            return ((ValueToken) astNode.token).getValue();
-        } else if (astNode instanceof ExpressionNode) {
+        } else if (astNode.token instanceof ValueToken) {
+            return ((ValueToken) astNode.token).value;
+        } else if (astNode.token instanceof OperatorToken) {
             return calculateExpression((ExpressionNode) astNode);
         }
         return numberFactory.getNumber("0");
     }
 
     private INumber calculateExpression(ExpressionNode node) {
-        INumber result = numberFactory.getNumber("0");
-        INumber leftValue = calculateAst(node.leftChild);
-        INumber rightValue = calculateAst(node.rightChild);
-        switch (((OperatorToken) node.token).operator) {
-            case ADD:
-                result = leftValue.add(rightValue);
-                break;
-            case SUB:
-                result = leftValue.subtract(rightValue);
-                break;
-            case MULTIPLY:
-                result = leftValue.multiply(rightValue);
-                break;
-            case DIVIDE:
-                result = leftValue.divide(rightValue);
-                break;
-            case EXPONENT:
-                result = leftValue.pow(rightValue);
-                break;
-        }
-        return result;
+        return (((OperatorToken) node.token).operation.operation(calculateAst(node.leftChild), calculateAst(node.rightChild)));
     }
 }
 
