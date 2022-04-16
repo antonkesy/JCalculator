@@ -12,11 +12,11 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestJCalculator {
-    private final JCalculator TESTCAL = new JCalculator(new BigDecimalFactory(), new DefaultTokenMap());
+    private final JCalculator TEST_CAL = new JCalculator(new BigDecimalFactory(), new DefaultTokenMap());
 
     boolean testString(String input, String expected) {
         try {
-            String result = TESTCAL.calculate(input);
+            String result = TEST_CAL.calculate(input);
             if (result.equals(expected)) {
                 return true;
             } else {
@@ -31,7 +31,7 @@ public class TestJCalculator {
 
     @Test
     void testEmptyString() {
-        assertThrows(Exception.class, () -> TESTCAL.calculate(""));
+        assertThrows(Exception.class, () -> TEST_CAL.calculate(""));
     }
 
     @Test
@@ -96,12 +96,12 @@ public class TestJCalculator {
         assertTrue(testString("3*((3+1)*5)", "60"));
         assertTrue(testString("3*(5)", "15"));
         assertTrue(testString("(3)+1", "4"));
-        assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("(3+3"));
-        assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+)3"));
+        assertThrows(MissingTokenException.class, () -> TEST_CAL.calculate("(3+3"));
+        assertThrows(MissingTokenException.class, () -> TEST_CAL.calculate("3+)3"));
         //TODO catch too many closing parentheses
         //assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+3)+3"));
-        assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+)3"));
-        assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3()"));
+        assertThrows(MissingTokenException.class, () -> TEST_CAL.calculate("3+)3"));
+        assertThrows(MissingTokenException.class, () -> TEST_CAL.calculate("3()"));
     }
 
     @Test
