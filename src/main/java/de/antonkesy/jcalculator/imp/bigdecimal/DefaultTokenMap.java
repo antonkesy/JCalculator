@@ -18,10 +18,6 @@ public class DefaultTokenMap extends TokenMap {
         token.put("/", new OperatorToken("/", 3, INumber::divide));
         token.put("*", new OperatorToken("*", 3, INumber::multiply));
         token.put("^", new OperatorToken("^", 2, INumber::pow));
-        Token openParentheses = new Token("(", 1);
-        Token closeParentheses = new Token(")", 1);
-        token.put("(", openParentheses);
-        token.put(")", closeParentheses);
 
         token.put("pi", new ValueToken("pi", new BigDecimalNumber(Math.PI)));
         token.put("e", new ValueToken("e", new BigDecimalNumber(Math.E)));
@@ -31,8 +27,8 @@ public class DefaultTokenMap extends TokenMap {
 
     @Override
     protected List<PairToken> fillPairToken() {
-        Token openParentheses = new Token("(", 1);
-        Token closeParentheses = new Token(")", 1);
+        PairElementToken openParentheses = new PairElementToken("(");
+        PairElementToken closeParentheses = new PairElementToken(")");
         ArrayList<PairToken> pairs = new ArrayList<>();
         pairs.add(new PairToken(openParentheses, closeParentheses));
         return pairs;

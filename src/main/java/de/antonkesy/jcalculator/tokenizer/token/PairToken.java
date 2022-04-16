@@ -1,10 +1,10 @@
 package de.antonkesy.jcalculator.tokenizer.token;
 
 public class PairToken extends Token {
-    public final IToken front, end;
+    public final PairElementToken front, end;
 
-    public PairToken(IToken front, IToken end) {
-        super(front.getTypeRepresentation() + end.getTypeRepresentation(), front.getPriority());
+    public PairToken(PairElementToken front, PairElementToken end) {
+        super(front.getTypeRepresentation() + end.getTypeRepresentation(), 1);
         this.front = front;
         this.end = end;
     }
