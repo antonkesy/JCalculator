@@ -18,9 +18,10 @@ public final class Parser implements IParser {
     }
 
     private void setupParser() {
-        parser = null;
-        for (int i = 0; i <= tokenMap.getLastPriority(); ++i) {
-            parser = new PriorityParser(this, parser, tokenizer, tokenMap.getToken(i), tokenMap.getPairs(i));
+        parser = new LiteralParser(tokenizer);
+        parser = new PairParser(this, parser, tokenizer, tokenMap.getPairs());
+        for (int i = tokenMap.getFirstModifiablePriority(); i <= tokenMap.getLastPriority(); ++i) {
+            parser = new PriorityParser(parser, tokenizer, tokenMap.getToken(i));
         }
     }
 

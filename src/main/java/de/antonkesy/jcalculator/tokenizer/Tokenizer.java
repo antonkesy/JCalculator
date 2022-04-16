@@ -7,6 +7,7 @@ import de.antonkesy.jcalculator.tokenizer.token.TypeRepresentation;
 import de.antonkesy.jcalculator.tokenizer.token.ValueToken;
 import de.antonkesy.jcalculator.tokenizer.token.map.ITokenMap;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;

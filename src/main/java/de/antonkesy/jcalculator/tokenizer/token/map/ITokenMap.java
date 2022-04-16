@@ -10,7 +10,9 @@ public interface ITokenMap {
 
     Collection<IToken> getAll();
 
-    Collection<PairToken> getPairs(int level);
+    Collection<PairToken> getPairs();
 
     int getLastPriority();
+
+    int getFirstModifiablePriority();
 }

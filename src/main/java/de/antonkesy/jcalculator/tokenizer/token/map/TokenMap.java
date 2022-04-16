@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class TokenMap implements ITokenMap {
-    public final HashMap<String, IToken> token = new HashMap<>();
-    public final List<PairToken> tokenPairs = new ArrayList<>();
+    private final HashMap<String, IToken> token = new HashMap<>();
+    private final List<PairToken> tokenPairs = new ArrayList<>();
 
     public TokenMap() {
         this.token.putAll(fillMap());
@@ -29,11 +29,19 @@ public abstract class TokenMap implements ITokenMap {
 
     @Override
     public Collection<IToken> getAll() {
-        return token.values();
+        ArrayList<IToken> all = new ArrayList<>(token.values());
+        all.addAll(tokenPairs.stream().map(p -> p.front).collect(Collectors.toCollection(ArrayList::new)));
+        all.addAll(tokenPairs.stream().map(p -> p.end).collect(Collectors.toCollection(ArrayList::new)));
+        return all;
     }
 
     @Override
-    public List<PairToken> getPairs(int level) {
-        return tokenPairs.stream().filter(t -> t.getPriority() == level).collect(Collectors.toCollection(ArrayList::new));
+    public Collection<PairToken> getPairs() {
+        return tokenPairs;
+    }
+
+    @Override
+    public int getFirstModifiablePriority() {
+        return 2;
     }
 }
