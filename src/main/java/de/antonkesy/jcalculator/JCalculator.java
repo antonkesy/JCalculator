@@ -46,7 +46,7 @@ public class JCalculator {
     /**
      * @param tokenList need's to be correctly build or wrong result gets calculated with no error
      */
-    public String calculate(List<IToken> tokenList) throws MissingTokenException {
+    public String calculate(List<IToken> tokenList) throws MissingTokenException, OperatorToken.Operation.OperationException {
         Tokenizer tokenizer = new Tokenizer(tokenList, numberFactory, tokenMap);
         return calculate(tokenizer);
     }
