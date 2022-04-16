@@ -3,6 +3,7 @@ package de.antonkesy.jcalculator;
 import de.antonkesy.jcalculator.imp.bigdecimal.BigDecimalFactory;
 import de.antonkesy.jcalculator.imp.bigdecimal.DefaultTokenMap;
 import de.antonkesy.jcalculator.parser.exception.MissingTokenException;
+import de.antonkesy.jcalculator.tokenizer.token.OperatorToken;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class TestJCalculator {
             } else {
                 fail("expected = " + expected + " actual = " + result);
             }
-        } catch (IOException | MissingTokenException e) {
+        } catch (IOException | MissingTokenException | OperatorToken.Operation.OperationException e) {
             e.printStackTrace();
             fail();
         }
