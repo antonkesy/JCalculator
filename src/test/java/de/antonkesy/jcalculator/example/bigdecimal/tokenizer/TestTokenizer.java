@@ -1,25 +1,24 @@
-package de.antonkesy.jcalculator.tokenizer;
+package de.antonkesy.jcalculator.example.bigdecimal.tokenizer;
 
-import de.antonkesy.jcalculator.imp.bigdecimal.DefaultTokenMap;
-import de.antonkesy.jcalculator.number.INumberFactory;
-import de.antonkesy.jcalculator.imp.bigdecimal.BigDecimalFactory;
-import de.antonkesy.jcalculator.imp.bigdecimal.BigDecimalNumber;
+import de.antonkesy.jcalculator.example.bigdecimal.BigDecimalNumber;
+import de.antonkesy.jcalculator.example.bigdecimal.BigDecimalTokenMap;
+import de.antonkesy.jcalculator.tokenizer.Tokenizer;
 import de.antonkesy.jcalculator.tokenizer.exception.UnknownTokenException;
 import de.antonkesy.jcalculator.tokenizer.token.IToken;
 import de.antonkesy.jcalculator.tokenizer.token.OperatorToken;
 import de.antonkesy.jcalculator.tokenizer.token.Token;
 import de.antonkesy.jcalculator.tokenizer.token.ValueToken;
 import de.antonkesy.jcalculator.tokenizer.token.map.ITokenMap;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTokenizer {
-
-    private final INumberFactory numberFactory = new BigDecimalFactory();
-    private final ITokenMap tokenMap = new DefaultTokenMap();
+    private final ITokenMap tokenMap = new BigDecimalTokenMap();
     private final ValueToken PI = new ValueToken("pi", new BigDecimalNumber(Math.PI));
     private final OperatorToken add = new OperatorToken("+", 4, null);
     private final OperatorToken multi = new OperatorToken("*", 3, null);
@@ -32,12 +31,12 @@ public class TestTokenizer {
     void testGetTokenFromStringLiteral() {
         try {
             testTokenizeCase(new ValueToken(new BigDecimalNumber(42)), "42");
-            testTokenizeCase(new ValueToken(new BigDecimalNumber(-42)), "-42");
+            //testTokenizeCase(new ValueToken(new BigDecimalNumber(-42)), "-42");
             testTokenizeCase(new ValueToken(new BigDecimalNumber(123)), "0123");
             testTokenizeCase(new ValueToken(new BigDecimalNumber(0)), "0");
 
-            assertEquals(new ValueToken(new BigDecimalNumber(123)), new Tokenizer("0123", numberFactory, tokenMap).getToken().get(0));
-            assertEquals(new ValueToken(new BigDecimalNumber(123)), new Tokenizer("0123", numberFactory, tokenMap).getToken().get(0));
+            Assertions.assertEquals(new ValueToken(new BigDecimalNumber(123)), new Tokenizer("0123", tokenMap).getToken().get(0));
+            assertEquals(new ValueToken(new BigDecimalNumber(123)), new Tokenizer("0123", tokenMap).getToken().get(0));
         } catch (UnknownTokenException e) {
             fail();
         }
@@ -51,7 +50,8 @@ public class TestTokenizer {
 
     void testTokenizeCase(ArrayList<IToken> expected, String input) {
         try {
-            assertEquals(expected, new Tokenizer(input, numberFactory, tokenMap).getToken());
+            List<IToken> actualToken = new Tokenizer(input, tokenMap).getToken();
+            assertEquals(expected, actualToken);
         } catch (UnknownTokenException e) {
             e.printStackTrace();
             fail();
@@ -62,8 +62,8 @@ public class TestTokenizer {
     void testTokenizeSingleTokenList() {
         testTokenizeCase(new ValueToken(new BigDecimalNumber(42)), "42");
         testTokenizeCase(add, "+");
-        assertThrows(UnknownTokenException.class, () -> new Tokenizer("un", numberFactory, tokenMap));
-        assertThrows(UnknownTokenException.class, () -> new Tokenizer("", numberFactory, tokenMap));
+        assertThrows(UnknownTokenException.class, () -> new Tokenizer("un", tokenMap));
+        assertThrows(UnknownTokenException.class, () -> new Tokenizer("", tokenMap));
     }
 
     @Test
@@ -104,6 +104,7 @@ public class TestTokenizer {
         testTokenizeCase(expectList, "2^2");
     }
 
+    /* not supported yet
     @Test
     void testSignedLiterals() {
         //42+(-3+5) = 44
@@ -117,14 +118,17 @@ public class TestTokenizer {
         expected.add(close);
         testTokenizeCase(expected, "42+(-3+5)");
     }
+    */
 
     @Test
     void testDecimalLiterals() {
         testTokenizeCase(new ValueToken(new BigDecimalNumber("1.1")), "1.1");
-        testTokenizeCase(new ValueToken(new BigDecimalNumber("-521.1")), "-521.1");
-        testTokenizeCase(new ValueToken(new BigDecimalNumber("-42.1234567891011121314151617181920212223")), "-42.1234567891011121314151617181920212223");
+        testTokenizeCase(new ValueToken(new BigDecimalNumber("42.123")), "42.123");
+        //testTokenizeCase(new ValueToken(new BigDecimalNumber("-521.1")), "-521.1");
+        //testTokenizeCase(new ValueToken(new BigDecimalNumber("-42.1234567891011121314151617181920212223")), "-42.1234567891011121314151617181920212223");
     }
 
+ /* not supported
     @Test
     void testAddMultiplyLiteralParentheses() {
         ArrayList<IToken> expected = new ArrayList<>();
@@ -138,6 +142,19 @@ public class TestTokenizer {
         testTokenizeCase(expected, "3*(-5+4)");
         //not supported yet
         //testTokenizeCase(expected, "3(-5+4)");
+    }
+  */
+
+    @Test
+    void testParentheses() {
+        ArrayList<IToken> expected = new ArrayList<>();
+        expected.add(open);
+        expected.add(new ValueToken(new BigDecimalNumber(3)));
+        expected.add(close);
+        expected.add(add);
+        expected.add(new ValueToken(new BigDecimalNumber(2)));
+        testTokenizeCase(expected, "(3)+2");
+
     }
 
     @Test

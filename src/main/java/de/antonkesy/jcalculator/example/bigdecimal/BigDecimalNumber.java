@@ -1,4 +1,4 @@
-package de.antonkesy.jcalculator.imp.bigdecimal;
+package de.antonkesy.jcalculator.example.bigdecimal;
 
 import de.antonkesy.jcalculator.number.INumber;
 

@@ -1,4 +1,4 @@
-package de.antonkesy.jcalculator.imp.bigdecimal;
+package de.antonkesy.jcalculator.example.bigdecimal;
 
 import de.antonkesy.jcalculator.number.INumber;
 import de.antonkesy.jcalculator.tokenizer.token.*;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DefaultTokenMap extends TokenMap {
+public class BigDecimalTokenMap extends TokenMap {
 
     @Override
     protected HashMap<String, IToken> fillMap() {
@@ -38,4 +38,13 @@ public class DefaultTokenMap extends TokenMap {
     public int getLastPriority() {
         return 4;
     }
+
+    @Override
+    public IToken parseLiteralToken(String tokenString, IToken lastToken) {
+        if (tokenString.matches("\\d+(\\.\\d*)?")) {
+            return new ValueToken(new BigDecimalNumber(tokenString));
+        }
+        return null;
+    }
+   
 }

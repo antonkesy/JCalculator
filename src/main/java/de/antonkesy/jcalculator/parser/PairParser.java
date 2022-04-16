@@ -36,14 +36,14 @@ public class PairParser implements IParser {
                 if (inside == null || inside.token == null)
                     throw new MissingTokenException(getStartPairToken(left.token).end);
             }
-            IToken toDelete = tokenizer.nextToken();
+            tokenizer.nextToken();
             //if inside of brackets is empty
             if (inside == null) {
                 throw new MissingTokenException(ValueToken.class.getName());
             }
             return inside;
         } else if (isEndPairToken(left.token)) {
-            throw new MissingTokenException(getStartPairToken(left.token).front);
+            throw new MissingTokenException("Front element of " + left.token.getTypeRepresentation());
         }
 
         return left;

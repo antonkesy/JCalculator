@@ -1,8 +1,8 @@
-package de.antonkesy.jcalculator.parser;
+package de.antonkesy.jcalculator.example.bigdecimal.parser;
 
-import de.antonkesy.jcalculator.imp.bigdecimal.BigDecimalFactory;
-import de.antonkesy.jcalculator.imp.bigdecimal.BigDecimalNumber;
-import de.antonkesy.jcalculator.imp.bigdecimal.DefaultTokenMap;
+import de.antonkesy.jcalculator.example.bigdecimal.BigDecimalNumber;
+import de.antonkesy.jcalculator.example.bigdecimal.BigDecimalTokenMap;
+import de.antonkesy.jcalculator.parser.Parser;
 import de.antonkesy.jcalculator.parser.ast_nodes.ExpressionNode;
 import de.antonkesy.jcalculator.parser.ast_nodes.FactorNode;
 import de.antonkesy.jcalculator.parser.ast_nodes.Node;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestParser {
-    private final ITokenMap tokenMap = new DefaultTokenMap();
+    private final ITokenMap tokenMap = new BigDecimalTokenMap();
     private final OperatorToken add = new OperatorToken("+", 2, null);
     private final OperatorToken multiply = new OperatorToken("*", 1, null);
 
@@ -30,7 +30,7 @@ public class TestParser {
         testToken.add(new ValueToken(new BigDecimalNumber(42)));
         testToken.add(add);
         testToken.add(new ValueToken(new BigDecimalNumber(73)));
-        Tokenizer tokenizer = new Tokenizer(testToken, new BigDecimalFactory(), tokenMap);
+        Tokenizer tokenizer = new Tokenizer(testToken, tokenMap);
 
         try {
             Parser parser = new Parser(tokenizer, tokenMap);
@@ -58,7 +58,7 @@ public class TestParser {
         testToken.add(new ValueToken(new BigDecimalNumber(73)));
         testToken.add(multiply);
         testToken.add(new ValueToken(new BigDecimalNumber(101)));
-        Tokenizer tokenizer = new Tokenizer(testToken, new BigDecimalFactory(), tokenMap);
+        Tokenizer tokenizer = new Tokenizer(testToken, tokenMap);
 
         try {
             Parser parser = new Parser(tokenizer, tokenMap);

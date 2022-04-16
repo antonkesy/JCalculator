@@ -15,4 +15,6 @@ public interface ITokenMap {
     int getLastPriority();
 
     int getFirstModifiablePriority();
+
+    IToken parseLiteralToken(String tokenString, IToken lastToken);
 }

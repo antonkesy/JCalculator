@@ -29,7 +29,7 @@ public class JCalculator {
      * @throws MissingTokenException if expression is not complete
      */
     public String calculate(String expressionString) throws UnknownTokenException, MissingTokenException, OperatorToken.Operation.OperationException {
-        return calculate(new Tokenizer(expressionString, numberFactory, tokenMap));
+        return calculate(new Tokenizer(expressionString, tokenMap));
     }
 
     /**
@@ -47,7 +47,7 @@ public class JCalculator {
      * @param tokenList need's to be correctly build or wrong result gets calculated with no error
      */
     public String calculate(List<IToken> tokenList) throws MissingTokenException, OperatorToken.Operation.OperationException {
-        Tokenizer tokenizer = new Tokenizer(tokenList, numberFactory, tokenMap);
+        Tokenizer tokenizer = new Tokenizer(tokenList, tokenMap);
         return calculate(tokenizer);
     }
 
