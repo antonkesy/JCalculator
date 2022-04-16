@@ -45,7 +45,7 @@ public class TestJCalculator {
 
     @Test
     void testAddition() {
-        assertTrue(testString("1+1", "2"));
+        assertTrue(testString("1+2", "3"));
         assertTrue(testString("10+1", "11"));
         assertTrue(testString("1+2+3+4+5+6", "21"));
         assertTrue(testString("9950+50", "10000"));
@@ -53,7 +53,7 @@ public class TestJCalculator {
 
     @Test
     void testSubtraction() {
-        assertTrue(testString("1-1", "0"));
+        assertTrue(testString("3-2", "1"));
         assertTrue(testString("10-1", "9"));
         assertTrue(testString("9950-50", "9900"));
     }
@@ -94,8 +94,8 @@ public class TestJCalculator {
         assertTrue(testString("(3+1)", "4"));
         assertTrue(testString("3*(3+1)", "12"));
         assertTrue(testString("3*((3+1)*5)", "60"));
-        assertTrue(testString("3*(3)", "9"));
-        assertTrue(testString("(3)+3", "6"));
+        assertTrue(testString("3*(5)", "15"));
+        assertTrue(testString("(3)+1", "4"));
         assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("(3+3"));
         assertThrows(MissingTokenException.class, () -> TESTCAL.calculate("3+)3"));
         //TODO catch too many closing parentheses
